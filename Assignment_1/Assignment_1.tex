@@ -1,0 +1,86 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{todonotes}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\title{Assignment 0}
+\date{August 2020}
+
+\begin{document}
+
+\maketitle
+The objective of this lab assignment is to familiarize you with the \texttt{numpy} and \texttt{matplotlib} libraries in \texttt{python}.
+
+\todo{We need to give clear instructions on how to submit and what/format to submit That was a constant complaint last year.}
+
+% Broad topics to cover - 
+% \begin{enumerate}
+%     \item Vectorization in numpy (Can be done by comparing runtimes of for loop and vectorized code)
+%     \item Converting equations into numpy functions (can be combined with above point
+%     \item Plotting with different scales?
+%     \item Some probability or lin-alg thing?
+% \end{enumerate}
+
+\section{Problem on Probability}
+\subsection{Theoretical Problems}
+\begin{itemize}[leftmargin=*]
+\item Let $X \sim F_X$ be a random variable with given CDF $F_X$. Let there be another random variable $Y \sim Unif[0,1]$. Express $X$ in terms of $Y$ and prove your result. \\
+\item Let $X$ be an \href{https://en.wikipedia.org/wiki/Exponential_distribution}{exponential distribution} with parameter $\lambda$. Using the above result, obtain $X$ in terms of $Y$.
+\end{itemize}
+\subsection{Programming}
+Let $X$ be from the exponential distribution with $\lambda = 1.0$. Complete the function \texttt{generate\_expo} in the file \texttt{prob.py} to generate samples of this variable using only the \texttt{numpy.random.uniform} function. \\
+\todo{Alternatively, we can have this $X$ to be the output of a softmax and ask to generate samples for that.}  
+\subsection{Observation and plotting}
+Change $\lambda$ etc and generate scatter plots?
+
+\section{Vectorization}
+In this problem you will implement a function to compute the pair-wise $L_2$ similarity between two sets of points. \\
+Let $X \in \mathbb{R}^{n_1 \times d}$ and $Y \in \mathbb{R}^{n_2 \times d}$ where $n_1, n_2$ are the number of points in the two sets, the $L_2$ similarity between two points $x$ and $y$ is defined as 
+\todo{Even if problem 2 is only about kernel\_vec and its efficiency, wont the concept of kernel itself be a bit intimidating as a first assignment? Especially given it is all remote}
+
+\begin{equation*}
+    d(x,y) = \sum_{i=1}^d (x_i - y_i)^2
+\end{equation*}
+
+\subsection{Theoretical Problems}
+
+\begin{itemize}[leftmargin=*]
+\item Obtain a vector expression for $d(x,y)$ when $x , y \in \mathbb{R}^d$
+\end{itemize}
+
+Given the two sets of $n_1, n_2$ points respectively, we are interested in obtaining a matrix $K \in \mathbb{R}^{n_1 \times n_2}$ where $K_{ij} = d(X_i,Y_j)$
+\begin{itemize}[leftmargin=*]
+\item Express $K$ using $X$, $Y$ and elementary matrix operations (addition, subtraction, multiplication, transpose)
+\end{itemize}
+\subsection{Programming Problems}
+\begin{itemize}[leftmargin=*]
+\item Complete the function \texttt{pairwise\_similarity\_looped} to obtain this matrix $K$ using for loops. 
+\end{itemize}
+
+The above $\mathcal{O}(n_1 n_2 d)$ solution doesn't scale well. However, \texttt{numpy} provides a powerful mechanism called vectorization which can speed up this process drastically. \\
+
+\begin{itemize}[leftmargin=*]
+\item Complete the function \texttt{pairwise\_similarity\_vec} to obtain $K$ in a vectorized manner. To do this translate your result from problem 2 into \texttt{numpy}.
+
+\item For each point in $X$, compute the index of the closest point in $Y$ and the distance from that point. Do the same for $Y$. Complete the function
+\texttt{closest\_point}.
+\end{itemize}
+% 4. Zero out entries which are lower than a threshold (boolean and masking)?
+
+
+\section{Probability and simulation}
+% Here we can put a problem where we discuss a monte carlo simulation, having some sort of  a game and getting students to compute the expected reward theoretically and verify it with a numpy simulation.
+
+You are given a special coin for which probability of getting a Head is 0.25 and probability of getting a Tail is 0.75. You are told to keep flipping the coin till you get two consecutive heads. What is the expected number of flips that you have to make? 
+\begin{itemize}[leftmargin=*]
+    \item Compute the expected value  analytically.
+    \item Write a \texttt{numpy} program in the file \texttt{simulation.py} to simulate this experiment for $n=10,100,1000,10000$ steps and plot a graph of the observed expected value vs number of steps. Report your observations.
+\end{itemize}
+%  for a large number of times and report the expected value you observe. Also 
+
+\section*{Submission Instructions}
+% We have provided a skeleton code in the folder \texttt{}. Complete the code in the files a.py,b.py,c.py,d.py, and add solutions to theoretical questions as a SINGLE pdf document named rollnumber_sol.pdf. Gzip the folder using - \texttt{tar -czvf <rollnumber>\_asmt0.tar.gz <rollnumber>\_asmt0} and submit.   
+\end{document}
