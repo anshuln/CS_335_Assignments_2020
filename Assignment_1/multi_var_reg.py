@@ -60,6 +60,19 @@ def ridge_regression(W, X_train, Y_train, X_test, Y_test, reg, lr=0.00001, max_i
 
 	return W, train_mses, test_mses
 
+def weighted_regression(X, Y, r):
+	'''
+	Fill up this function for problem 3.
+	Use closed form expression.
+	r_train is a (n,) array, where n is number of training samples
+	'''
+
+	## TODO
+	R = np.diag(r*r)
+
+	W = (np.linalg.inv(X.T @ R @ X)) @ (X.T @ R @ Y)
+	## END TODO
+	return W
 
 if __name__ == '__main__':
 	# Load and split data
@@ -73,7 +86,7 @@ if __name__ == '__main__':
 	## END TODO
 
 	W, train_mses, test_mses = ordinary_least_squares(W, X_train, Y_train, X_test, Y_test)
-	# W, train_mses, test_mses = ridge_regression(W, X_train, Y_train, X_test, Y_test, 10)
+	# W_ridge, train_mses, test_mses = ridge_regression(W, X_train, Y_train, X_test, Y_test, 10)
 
 	# Plots
 	plt.figure(figsize=(4,4))
@@ -83,3 +96,4 @@ if __name__ == '__main__':
 	plt.xlabel('Iteration')
 	plt.ylabel('MSE')
 	plt.show()
+

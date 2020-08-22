@@ -3,43 +3,43 @@ import matplotlib.pyplot as plt
 from utils import load_data1, split_data
 
 def mse(X, Y, w, b):
-	'''
-	Compute mean squared error between predictions and true y values
+    '''
+    Compute mean squared error between predictions and true y values
 
-	Args:
-	X - numpy array of shape (n_samples, 1)
-	Y - numpy array of shape (n_samples, 1)
-	w - a float
-	b - a float
-	'''
+    Args:
+    X - numpy array of shape (n_samples, 1)
+    Y - numpy array of shape (n_samples, 1)
+    w - a float
+    b - a float
+    '''
 
-	## TODO
-	mse = np.mean((w*X+b-Y)**2)
-	## END TODO
+    ## TODO
+    mse = np.mean((w*X+b-Y)**2)
+    ## END TODO
 
-	return mse
+    return mse
 
 def ordinary_least_squares(w, b, X_train, Y_train, X_test, Y_test, lr, max_iter):
-	train_mses = []
-	test_mses = []
+    train_mses = []
+    test_mses = []
 
-	for i in range(max_iter):
-		## TODO: Compute train and test MSE
-		train_mse = mse(X_train, Y_train, w, b) 
-		test_mse = mse(X_test, Y_test, w, b)
-		## END TODO
+    for i in range(max_iter):
+        ## TODO: Compute train and test MSE
+        train_mse = mse(X_train, Y_train, w, b) 
+        test_mse = mse(X_test, Y_test, w, b)
+        ## END TODO
 
-		train_mses.append(train_mse)
-		test_mses.append(test_mse)
+        train_mses.append(train_mse)
+        test_mses.append(test_mse)
 
-		## TODO: Update w and b using a single step of gradient descent
-		
-		w -= lr * np.mean(2*(w*X_train + b - Y_train)*X_train)
-		b -= lr * np.mean(2*(w*X_train + b - Y_train))
-		
-		## END TODO
+        ## TODO: Update w and b using a single step of gradient descent
+        
+        w -= lr * np.mean(2*(w*X_train + b - Y_train)*X_train)
+        b -= lr * np.mean(2*(w*X_train + b - Y_train))
+        
+        ## END TODO
 
-	return w, b, train_mses, test_mses
+    return w, b, train_mses, test_mses
 
 # Load and split data
 X, Y = load_data1('data1.csv')
@@ -69,7 +69,7 @@ plt.plot([-20, 50], [-20*w+b, 50*w+b], color='r')
 plt.scatter(X_train, Y_train, color='b', marker='.')
 plt.scatter(X_test, Y_test, color='g', marker='x')
 for x, y in zip(X_test, Y_test):
-	plt.plot([x, x], [w*x+b, y], color='gray', zorder=-1)
+    plt.plot([x, x], [w*x+b, y], color='gray', zorder=-1)
 plt.xlabel('x')
 plt.ylabel('y')
 plt.tight_layout()
