@@ -61,11 +61,6 @@ def split_data(X, Y, train_ratio=0.8):
 
 	## TODO
 
-	n_train = int(train_ratio*X.shape[0])
-	X_train = X[:n_train]
-	Y_train = Y[:n_train]
-	X_test = X[n_train:]
-	Y_test = Y[n_train:]
 
 	## END TODO
 
@@ -100,7 +95,7 @@ def normalize(X):
 	(X - mean(X))/std(X)
 	'''
 	## TODO
-	return (X - np.mean(X))/np.std(X)
+
 	## END TODO
 
 def preprocess(X, Y):
@@ -118,14 +113,6 @@ def preprocess(X, Y):
 	'''
 
 	## TODO
-	Xn = np.ones((X.shape[0], 1))
-	for i in range(1, X.shape[1]):
-		try:
-			f = X[:, i].astype(float)
-			Xn = np.concatenate([Xn, normalize(f.reshape(-1, 1))], axis=1)
-		except ValueError:
-			enc = one_hot_encode(X[:, i], np.unique(X[:, i]))
-			Xn = np.concatenate([Xn, enc], axis=1)
-	return Xn, normalize(Y)
+
 	## END TODO
 
