@@ -6,7 +6,7 @@ import argparse
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='Problem 4')
-	parser.add_argument('--data', type=str, default='data4.csv',
+	parser.add_argument('--data', type=str, default='data_4.csv',
 					help='Path to csv file of dataset')
 	args = parser.parse_args()
 

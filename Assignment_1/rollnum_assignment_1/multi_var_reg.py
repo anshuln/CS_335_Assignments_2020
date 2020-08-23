@@ -20,9 +20,13 @@ def mse(X, Y, W):
 
 	return mse
 
-def ordinary_least_squares(W, X_train, Y_train, X_test, Y_test, lr=0.00001, max_iter=200):
+def ordinary_least_squares(X_train, Y_train, X_test, Y_test, lr=0.00001, max_iter=2000):
 	train_mses = []
 	test_mses = []
+
+	## TODO: Initialize W using using random normal 
+
+	## END TODO
 
 	for i in range(max_iter):
 
@@ -39,9 +43,16 @@ def ordinary_least_squares(W, X_train, Y_train, X_test, Y_test, lr=0.00001, max_
 
 	return W, train_mses, test_mses
 
-def ridge_regression(W, X_train, Y_train, X_test, Y_test, reg, lr=0.00001, max_iter=200):
+def ridge_regression(X_train, Y_train, X_test, Y_test, reg, lr=0.00001, max_iter=2000):
+	'''
+	reg - regularization parameter (lambda in Q2.1 c)
+	'''
 	train_mses = []
 	test_mses = []
+
+	## TODO: Initialize W using using random normal 
+
+	## END TODO
 
 	for i in range(max_iter):
 
@@ -72,17 +83,12 @@ def weighted_regression(X, Y, r):
 
 if __name__ == '__main__':
 	# Load and split data
-	X, Y = load_data2('train.csv')
+	X, Y = load_data2('data2.csv')
 	X, Y = preprocess(X, Y)
 	X_train, Y_train, X_test, Y_test = split_data(X, Y)
 
-	## TODO
-	# Initialize W using using random normal 
-
-	## END TODO
-
-	W, train_mses, test_mses = ordinary_least_squares(W, X_train, Y_train, X_test, Y_test)
-	# W_ridge, train_mses, test_mses = ridge_regression(W, X_train, Y_train, X_test, Y_test, 10)
+	W, train_mses, test_mses = ordinary_least_squares(X_train, Y_train, X_test, Y_test)
+	# W_ridge, train_mses, test_mses = ridge_regression(X_train, Y_train, X_test, Y_test, 10)
 
 	# Plots
 	plt.figure(figsize=(4,4))

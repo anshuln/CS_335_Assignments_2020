@@ -19,9 +19,15 @@ def mse(X, Y, w, b):
 
     return mse
 
-def ordinary_least_squares(w, b, X_train, Y_train, X_test, Y_test, lr, max_iter):
+def ordinary_least_squares(X_train, Y_train, X_test, Y_test, lr=0.001, max_iter=200):
     train_mses = []
     test_mses = []
+
+    # Initialize w and b
+    ## TODO
+    w = 0
+    b = 0
+    ## END TODO
 
     for i in range(max_iter):
         ## TODO: Compute train and test MSE
@@ -33,40 +39,33 @@ def ordinary_least_squares(w, b, X_train, Y_train, X_test, Y_test, lr, max_iter)
 
         ## TODO: Update w and b using a single step of gradient descent
         
+        
         ## END TODO
 
     return w, b, train_mses, test_mses
 
-# Load and split data
-X, Y = load_data1('data1.csv')
-X_train, Y_train, X_test, Y_test = split_data(X, Y)
+if __name__ == '__main__':
+    # Load and split data
+    X, Y = load_data1('data1.csv')
+    X_train, Y_train, X_test, Y_test = split_data(X, Y)
 
-# Initialize w and b and other parameters
-## TODO
-w = 0
-b = 0
+    w, b, train_mses, test_mses = ordinary_least_squares(X_train, Y_train, X_test, Y_test)
 
-max_iter = 5
-lr = 0.001
-## END TODO
-
-w, b, train_mses, test_mses = ordinary_least_squares(w, b, X_train, Y_train, X_test, Y_test, lr, max_iter)
-
-# Plots
-plt.figure(figsize=(8,4))
-plt.subplot(121)
-plt.plot(train_mses)
-plt.plot(test_mses)
-plt.legend(['Train MSE', 'Test MSE'])
-plt.xlabel('Iteration')
-plt.ylabel('MSE')
-plt.subplot(122)
-plt.plot([-20, 50], [-20*w+b, 50*w+b], color='r')
-plt.scatter(X_train, Y_train, color='b', marker='.')
-plt.scatter(X_test, Y_test, color='g', marker='x')
-for x, y in zip(X_test, Y_test):
-    plt.plot([x, x], [w*x+b, y], color='gray', zorder=-1)
-plt.xlabel('x')
-plt.ylabel('y')
-plt.tight_layout()
-plt.show()
+    # Plots
+    plt.figure(figsize=(8,4))
+    plt.subplot(121)
+    plt.plot(train_mses)
+    plt.plot(test_mses)
+    plt.legend(['Train MSE', 'Test MSE'])
+    plt.xlabel('Iteration')
+    plt.ylabel('MSE')
+    plt.subplot(122)
+    plt.plot([-20, 50], [-20*w+b, 50*w+b], color='r')
+    plt.scatter(X_train, Y_train, color='b', marker='.')
+    plt.scatter(X_test, Y_test, color='g', marker='x')
+    for x, y in zip(X_test, Y_test):
+        plt.plot([x, x], [w*x+b, y], color='gray', zorder=-1)
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.tight_layout()
+    plt.show()
