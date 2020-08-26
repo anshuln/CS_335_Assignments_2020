@@ -15,7 +15,7 @@ def mse(X, Y, W):
 	'''
 
 	## TODO
-	mse = np.mean((X@W-Y)**2)
+	mse = 0.5*np.mean((X@W-Y)**2)
 	## END TODO
 
 	return mse

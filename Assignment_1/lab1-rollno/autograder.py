@@ -21,7 +21,7 @@ def grade1():
 		y = np.array([7.4395211 , 1.29711056, 4.99824035, 1.87706798, 0.93306619, 6.65645683, 8.6573449 , 2.54946024, 1.3023241 , 6.52289899]).reshape(10, 1)
 		w = 0.513244
 		b = 1.839345
-		assert single_var_reg.mse(x, y, w, b) == 8.63801682266327
+		assert single_var_reg.mse(x, y, w, b) == 4.319008411331635
 		marks += 0.5
 	except:
 		print('Q1 mse() incorrect')
@@ -31,8 +31,8 @@ def grade1():
 		X, Y = utils.load_data1('data1.csv')
 		X_train, Y_train, X_test, Y_test = utils.split_data(X, Y)
 		w, b, train_mses, test_mses = single_var_reg.ordinary_least_squares(X_train, Y_train, X_test, Y_test)
-		assert train_mses[-1] < 103
-		assert test_mses[-1] < 135
+		assert train_mses[-1] < 52
+		assert test_mses[-1] < 68
 		for i in range(len(train_mses)-1):
 			assert train_mses[i] >= train_mses[i+1]
 		marks += 3
@@ -71,8 +71,8 @@ def grade2():
 		X, Y = utils.preprocess(X, Y)
 		X_train, Y_train, X_test, Y_test = utils.split_data(X, Y)
 		W, train_mses, test_mses = multi_var_reg.ordinary_least_squares(X_train, Y_train, X_test, Y_test)
-		assert train_mses[-1] < 0.45
-		assert test_mses[-1] < 0.95
+		assert train_mses[-1] < 0.23
+		assert test_mses[-1] < 0.48
 		for i in range(len(train_mses)-1):
 			assert train_mses[i] >= train_mses[i+1]
 		marks += 1.5
@@ -83,8 +83,8 @@ def grade2():
 		reg = 100
 		W_act = np.linalg.inv(X_train.T @ X_train + reg * np.eye(X_train.shape[1])) @ X_train.T @ Y_train
 		W, train_mses, test_mses = multi_var_reg.ridge_regression(X_train, Y_train, X_test, Y_test, reg)
-		assert train_mses[-1] < 0.15
-		assert test_mses[-1] < 0.35
+		assert train_mses[-1] < 0.08
+		assert test_mses[-1] < 0.18
 		assert (W@W.T)[0][0] < 1e-6
 		assert np.linalg.norm(W - W_act) < 0.5
 		for i in range(len(train_mses)-1):
