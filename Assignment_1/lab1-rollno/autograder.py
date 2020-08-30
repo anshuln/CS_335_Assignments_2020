@@ -80,12 +80,12 @@ def grade2():
 		print('Q2 ordinary_least_squares() incorrect')
 
 	try:
-		reg = 100
-		W_act = np.linalg.inv(X_train.T @ X_train + reg * np.eye(X_train.shape[1])) @ X_train.T @ Y_train
+		reg = 10
+		W_act = np.linalg.inv(X_train.T @ X_train + 2 * reg * X_train.shape[0] * np.eye(X_train.shape[1])) @ X_train.T @ Y_train
 		W, train_mses, test_mses = multi_var_reg.ridge_regression(X_train, Y_train, X_test, Y_test, reg)
-		assert train_mses[-1] < 0.08
-		assert test_mses[-1] < 0.18
-		assert (W@W.T)[0][0] < 1e-6
+		assert train_mses[-1] < 0.3
+		assert test_mses[-1] < 0.35
+		assert (W@W.T)[0][0] < 1e-7
 		assert np.linalg.norm(W - W_act) < 0.5
 		for i in range(len(train_mses)-1):
 			assert train_mses[i] >= train_mses[i+1]

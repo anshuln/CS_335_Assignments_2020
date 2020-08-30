@@ -20,7 +20,7 @@ def mse(X, Y, W):
 
 	return mse
 
-def ordinary_least_squares(X_train, Y_train, X_test, Y_test, lr=0.00001, max_iter=2000):
+def ordinary_least_squares(X_train, Y_train, X_test, Y_test, lr=0.03, max_iter=2000):
 	train_mses = []
 	test_mses = []
 
@@ -40,12 +40,12 @@ def ordinary_least_squares(X_train, Y_train, X_test, Y_test, lr=0.00001, max_ite
 		test_mses.append(test_mse)
 
 		## TODO: Update w and b using a single step of gradient descent
-		W -= lr * 2 * X_train.T @ (X_train@W - Y_train)
+		W -= lr * X_train.T @ (X_train@W - Y_train)/X_train.shape[0]
 		## END TODO
 
 	return W, train_mses, test_mses
 
-def ridge_regression(X_train, Y_train, X_test, Y_test, reg, lr=0.00001, max_iter=2000):
+def ridge_regression(X_train, Y_train, X_test, Y_test, reg, lr=0.003, max_iter=200):
 	'''
 	reg - regularization parameter (lambda in Q2.1 c)
 	'''
@@ -68,7 +68,7 @@ def ridge_regression(X_train, Y_train, X_test, Y_test, reg, lr=0.00001, max_iter
 		test_mses.append(test_mse)
 
 		## TODO: Update w and b using a single step of gradient descent
-		W -= lr * (2 * X_train.T @ (X_train@W - Y_train) + 2*reg*W)
+		W -= lr * (X_train.T @ (X_train@W - Y_train)/X_train.shape[0] + 2*reg*W)
 		## END TODO
 
 	return W, train_mses, test_mses
@@ -93,8 +93,8 @@ if __name__ == '__main__':
 	X, Y = preprocess(X, Y)
 	X_train, Y_train, X_test, Y_test = split_data(X, Y)
 
-	W, train_mses, test_mses = ordinary_least_squares(X_train, Y_train, X_test, Y_test)
-	# W_ridge, train_mses, test_mses = ridge_regression(X_train, Y_train, X_test, Y_test, 10)
+	# W, train_mses, test_mses = ordinary_least_squares(X_train, Y_train, X_test, Y_test)
+	W_ridge, train_mses, test_mses = ridge_regression(X_train, Y_train, X_test, Y_test, 10)
 
 	# Plots
 	plt.figure(figsize=(4,4))

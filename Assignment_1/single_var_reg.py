@@ -19,7 +19,7 @@ def mse(X, Y, w, b):
 
     return mse
 
-def ordinary_least_squares(X_train, Y_train, X_test, Y_test, lr=0.001, max_iter=200):
+def ordinary_least_squares(X_train, Y_train, X_test, Y_test, lr=0.001, max_iter=20):
     train_mses = []
     test_mses = []
 
@@ -40,8 +40,8 @@ def ordinary_least_squares(X_train, Y_train, X_test, Y_test, lr=0.001, max_iter=
 
         ## TODO: Update w and b using a single step of gradient descent
         
-        w -= lr * np.mean(2*(w*X_train + b - Y_train)*X_train)
-        b -= lr * np.mean(2*(w*X_train + b - Y_train))
+        w -= lr * np.mean((w*X_train + b - Y_train)*X_train)
+        b -= lr * np.mean((w*X_train + b - Y_train))
         
         ## END TODO
 
