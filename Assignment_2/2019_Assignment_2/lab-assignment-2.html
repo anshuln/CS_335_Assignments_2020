@@ -1,0 +1,482 @@
+<html><head><link rel="stylesheet" type="text/css" href="./style.css"/><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+<TITLE>Lab Assignment 2</TITLE>
+
+  </head><body>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+      tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+      }
+      });
+    </script>
+    <script type="text/javascript" async
+	    src="https://www.cse.iitb.ac.in/~shivaram//teaching/old/cs344+386-s2018/resources/la-7/MathJax/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+
+    
+    <center>
+      <h3>
+    <h1> AI/ML - Spring 2019 <br> CS337 Lab Assignment 2</h1>
+      </h3>
+    </center>
+
+
+    <p><b>Please read the following important instructions before getting started on the assignment.</b>
+    </p><ol>
+      <li><b> This assignment will work <code>python2.7</code></b></li>
+      <li>The assignment should be completed individually. </li>
+      <li>Do not look at solutions to this assignment or related ones on the Internet.</li>
+      <li>All theory questions must be submitted in the single pdf file </li>
+      <li>All the hyperparameters must be listed in single pdf under Hyperparameters section and resources consulted must be duly listed in the References section of pdf file. Do not upload multiple pdfs.</li>
+      <li><b> Upload Guidelines : </b> Put all the assignment related files in folder with the convention <b> lab2-roll_no</b> and zip the folder.</li>
+      <li><b> Not following folder guidelines will attract penalty </b></li>
+      <li> All source code are checked with code plagiarism checker. Strict action will be taken again defaulters </li>
+      </ol>
+
+
+
+    <p><b>Acknowledgment:</b> This lab assignment is inspired
+      by <a href="http://inst.eecs.berkeley.edu/~cs188/pacman/classification.html">Project
+	5: Classification</a>, which is a part of a recent offering of
+      CS188 at UC Berkeley. We thank the authors at Berkeley for
+      making their project available to the public. We also
+      acknowledge the authors of
+      the <a href="https://www.kaggle.com/smeschke/four-shapes/home">Kaggle
+	shapes data set</a>, which we use as a part of this
+      assignment.</p>
+
+    <p>In this assignment, you will design a <b>multi-class</b> classifier on a set of d-dimensional points: specifically a <b>Perceptron</b> classifier. You will be implementing multi class perceptron. The initial tasks would be to implement 1-vs-rest multi-class perceptron (namely,  and 1-vs-1) and analyze the results on the given dataset of $d $dimensional points. Subsequently, you will have to use the same classifier on a
+      new data set of shape images, for which you will also have to design suitable features.</p>
+
+
+    <p><b><h3>Perceptron</h3></b>
+        Neural networks are computational models based on the structure of the brain. These are information processing structures whose most significant property is their ability to learn from data. These techniques have achieved great success in domains ranging from marketing to engineering.
+        There are many different types of neural networks, from which the multilayer perceptron is the most important one. The characteristic neuron model in the multilayer perceptron is the so-called perceptron. In this assignment, we use the perceptron for multiclass classification.        
+        
+
+    </p>
+
+    <h3>Data Sets</h3>
+
+    <a href="./classification.zip">Data directory</a>.
+    
+    <h4>Data Set 1 (D1): d-dimensional points data</h4>
+
+    <p> The data set on which you will run your classifiers is a collection
+      of d-dimensional points which belong to k different classes. The method of generating the data points is as follows:
+      pick k different corners of a d-dimensional hypercube {1, -1}<sup>d</sup>. We sample data from a multivariate
+      gaussian centered at these points. The standard deviation matrix of the multivariate gaussian used is the matrix diag([sigma]*d): that is, the diagonal matrix with all diagonal entries as sigma. These sampled points are your input data. <br> For example, consider the case when d = 2 and k = 3. The hypercube is the square ${[1,1], [1,-1], [-1,1], [-1,-1]}$. Choosing 3 centres from this set, the centres of gaussians are ${[1, 1], [1, -1], [-1,-1]}$. The sampled points are plotted for each of the classes using sigma = 0.5.</p>
+
+    <br /><div align="center" style="float: CENTER; margin: 0  15px  5px  0;">
+      <img alt="2D Data Points" src="./2DClasses.png"/></div>
+    <p align="center">
+      <font size="2">Visual Representaion of the 2D Example with 3 classes</font>
+    </p>
+
+    <p>
+      In our case, the dimensions of data <b> d = 20</b>, the number of classes <b> k = 10</b> and the <b>sigma</b> in consideration is <b>1.5</b>. 100000 such data points along with the corresponding labels (classes) are generated. Out of these 80000 points are kept for training and 20000 points for testing. These are provided in <code>data/D1</code> directory. For Task 3.1 we will be using limited data from this data set (8000 train and 2000 test), referring to it as D1.2.
+    </p>
+
+    <h4>Data Set 2 (D2): Shape Images Data</h4>
+    <p>
+      This data set contains black and white 50x50 pixel sized images of different shapes. There are 1000 samples of 4 different shapes. We have attached the images as well as the extracted points from the shapes in the <code>data/D2 directory</code>. The extracted shapes will be in the form of a list with value '1' being black and '0' white. The list is generated using a row major scan of the image. The four classes labels are as follows : $['0' : circle, '1' : square, '2' : triangle, '3' : star]$. You can see the variation in the shapes, these variations are due to camera pose differences.
+    </p>
+
+    <br /><div align="center" style="float: CENTER; margin: 0  15px  5px  0;">
+        <img alt="Samples:" src="dataset_D2.png"/></div>
+    <p align="center">
+        <font size="2">Some samples for images per class</font>
+    </p>
+
+
+    <h3>Code</h3>
+
+    <p>The base code for this assignment is available
+      in <a>this zip file</a>. You need to use
+      these files from the <code>classification</code> directory.</p>
+
+    <table style="width: 100%;"><tbody><tr><td><b>File Name</b></td>
+	  <td><b>Description</b></td>
+	</tr><tr><td>classificationMethod.py</td>
+	  <td>Abstract super class for the classifiers you will write. You <b>should</b> read this file carefully to see how the infrastructure is set up. Do <b>not</b> edit this file. </td>
+	</tr><tr><td>createData.sh</td>
+	  <td>Bash script that runs the perceptron (1 vs rest) classifier on several different sizes of the training set. </td>
+	</tr><tr><td>createGraphIterations.gnuplot</td>
+	  <td>Gnuplot script to plot accuracy versus number of training examples seen. </td>
+	</tr><tr><td>createGraphTraining.gnuplot</td>
+	  <td>Gnuplot script to plot accuracy versus size of the training set. </td>
+	</tr><tr><td>data</td>
+	  <td>Contains the training and test data for both data sets.</td>
+	</tr><tr><td>dataClassifier.py</td>
+	  <td>The wrapper code that will call your classifiers. You will also write your enhanced feature extractor here.</td>
+	</tr>
+  <tr><td>perceptron1vr.py</td>
+	  <td>The file where you will write your first perceptron (1 vs rest) classifier.</td>
+	</tr>
+  <tr><td>mira.py</td> <td>The location where you will write your MIRA classifier.</td> </tr>
+  <!-- <tr><td>perceptron1v1.py</td>
+	  <td>The file where you will write your second perceptron (1 vs 1) classifier.</td>
+	</tr> -->
+  <tr><td>autograder.py</td>
+	  <td>The file we will be using to test your assignment. Do <b>not</b> edit this file. </td>
+	</tr><tr><td>samples.py</td>
+	  <td>I/O code to read in the classification data. Do <b>not</b> edit this file. </td>
+	</tr><tr><td>util.py</td>
+	  <td>Code defining some useful tools, that will save you a lot of time. Do <b>not</b> edit this file. </td>
+	</tr></tbody></table>
+
+
+    <h3>Task 1: Boolean functions in Perceptron (2.5 Marks)</h3>
+    Perceptrons can only separate $n$ linearly separable data as discussed in class. Given $n$ variables we can have $2^{2^n}$ boolean functions, but not all of these can be represented by a perceptron. For example, when $n=2$ the XOR and XNOR cannot be represented by a perceptron. Create a program in a programming language of your choice for  $2$ and $3$ boolean variables that outputs number of boolean functions that can be represented by a perceptron? <br> <br>
+    Write the code in a file and name it as <code>booleanFunc.py</code>. The code must return the desired integer outputs. <br>
+    <b>Expected: </b> Function returning desired output
+
+<h3>Task 2: Convex Hull (1 Marks)</h3> There are two teams A and B with player id - Team_Name followed by a number like 'A1' . The positions of the players at different time instants are given. In this task, you will complete visualize function that shows plot of convex hulls of players of teams A and B. The data for the players are given in file <code>convexHull.py</code>. <br>
+
+    Also, can you directly find a seperating line between two non-intersecting hulls if the boundaries are given? Why do you think non-intersecting convex hulls implies linearly separable?<br>
+    Write subjective answers in the report.
+    <br>
+    <b>Expected: </b> a) Visualise Function b) Plot  c) subjective answer in a pdf 
+
+    
+    <h3>Task 3: Understanding the Multi-class Perceptron (Ungraded)</h3>
+    <p>There exist two broad techniques to solve the multi-class classification problem (see <a href="https://en.wikipedia.org/wiki/Multiclass_classification">this link</a> for an overview). We will be implementing and comparing both these techniques in this assignment.</p>
+
+    <h3>1) The One-vs-rest (1vr) Multi-class Perceptron </h3>
+    <p>A Perceptron keeps a weight vector $w^y$ corresponding to each
+      class $y$ ($y$ is a suffix, not an exponent). Given a feature list
+      $f$ (a vector with the same number of dimensions as the weight
+      vectors), the perceptron computes the class $y$ whose weight vector
+      is most similar to the input vector $f$. Formally, given a feature
+      vector $f$ (in D1 (the point itself) and in D2 (a list of indicators for pixels being on)), we score each class $y$ with
+      $$score(f, y) = \Sigma_i f_i w_i^y$$ where $i$ iterates over the dimensions in the data. Then we choose the class with
+      the highest score as the predicted label for data instance $f$. In the code, we will represent $w^y$ as a Counter (defined in the file <code>util.py</code>).
+
+
+    </p><h4>Learning the weights of the Perceptron</h4>
+
+    <p>
+      In the basic multi-class Perceptron, we scan over the training data one instance at a time. When we come to an instance $(f,y)$, we find the label with highest score: $y\prime=argmax_{y\prime\prime}score(f,y\prime\prime)$, breaking ties arbitrarily. We compare $y\prime$ to the true label $y$. If $y\prime=y$, we have correctly classified the instance, and we do nothing. Otherwise, we predicted $y\prime$ when we should have predicted $y$. That means that $w_y$ has scored $f$ lower, and/or $w_{y\prime}$ has scored $f$ higher, than what would have been ideal. To avert this error in the future, we update these two weight vectors accordingly:
+
+      $$w_y=w_y+f,$$ and
+
+      $$w_{y\prime}=w_{y\prime} - f.$$
+    </p>
+
+    <h3>2) MIRA Classifier </h3>
+Similar to a multi-class perceptron classifier, multi-class MIRA classifier also keeps a prototype weight vector $w^y$ of each class $y$. We also scan over the data, one instance at a time. When we come to an instance $(f, y)$, we find the label with highest score:
+\( y' = arg \max\limits_{y''} score(f,y'') \)
+
+We compare \(y'\) to the true label \(y\). If \(y' = y\), we've gotten the instance correct, and we do nothing. Otherwise, we guessed \(y'\) but we should have guessed \(y\). Unlike the perceptron, we update the weight vectors of these labels with a variable step size:
+
+\( w^y = w^y + \tau f \)
+
+\( w^{y'} = w^{y'} - \tau f \)
+
+where \( \tau \geq 0 \) is chosen such that it minimizes
+
+\( \min\limits_{w'} \frac{1}{2} \sum\limits_{c} ||(w')^c - w^c ||_2^2 \)
+
+subject to the condition that \((w')^y f \geq (w')^{y'} f + 1 \)
+
+
+which is equivalent to
+
+\( \min\limits_{\tau} ||\tau f ||_2^2 \) subject to \( \tau \geq \frac{(w^{y'} - w^y)f + 1}{2 ||f||_2^2} \) and \( \tau \geq 0 \)
+
+Note that, \(w^{y'}f \geq w^y f \), so the condition \( \tau \geq 0 \) is always true given \( \tau \geq \frac{(w^{y'} - w^y)f + 1}{2 ||f||_2^2} \) Solving this simple problem, we then have
+
+\( \tau = \frac{(w^{y'} - w^y)f + 1}{2||f||_2^2} \)
+
+However, we would like to cap the maximum possible value of \( \tau \) by a positive constant C, which leads us to
+
+\( \tau = \min ( C, \frac{(w^{y'} - w^y)f + 1}{2||f||_2^2} ) \)
+
+    <!-- <h3>2) The One-vs-One (1v1) Mutli-class Perceptron</h3>
+    <p>In this technique the perceptron maintains $S = (k * (k-1)) / 2$  weights vectors, one for each distinct pair of classes, each weight vector of the same dimension as the number of features. Every weight vector corresponding to $w_{(y, y')}$ can be thought of as a binary classifier between classes $y$ and $y'$. When we come to an instance $(f,y)$, assuming some ordering among the classes; $$w_{(y, y')} \cdot f &gt; 0 \implies max(y, y')$$ is the class that gets a vote and  $$w_{(y, y')} \cdot f \leq 0 \implies min(y, y')$$ is the class that gets a vote. While guessing the class of an unknown data sample we do $S$ such votes and the class that receives the maximum votes is predicted, with ties settled arbitrarily.</p>
+
+    <h4> Learning Algorithm </h4>
+    <p>
+      Here we need to analyse all class pairs separately; that is, for each distinct (y, y') pair, we consider only data points belonging to these two classes, and perform a binary perceptron algorithm like update (as taught in class) on them.
+      (Note : No need to actually separate the training samples according to class pairs, you can do this in the same loop while iterating through all the data points).
+    </p>
+ -->
+    <h3>Task 4: Implementing 1vr Perceptron (3 marks)</h3>
+
+    <p>In this task, you have to implement the 1-vs-rest multi-class Perceptron
+      classifier. Fill out code in the <code>train()</code> function at the
+      location indicated in <code>perceptron1vr.py</code>. Using the addition,
+      subtraction, and multiplication functionality of
+      the <code>Counter</code> class in <code>util.py</code>, the perceptron
+      updates should be relatively easy to code. Certain implementation
+      issues have been taken care of for you in <code>perceptron1vr.py</code>,
+      such as the following.</p>
+
+    <ul><li> Iterating over the training data.</li>
+      <li> Setting up the <code>weights</code> data structure. This can be accessed using <code>self.weights</code> in the <code>train()</code> method.</li>
+      <li> Predictions for each label/class are performed by a separate weight vector, as described above. Therefore, each legal label needs its own <code>Counter</code> of weights.</li>
+    </ul><p>Run your code with the following command.</p>
+
+    <p><code>python dataClassifier.py -c 1vr -t 80000 -s 20000</code></p>
+
+    <p>This will print out a host of details, such as the classifier that
+      is being trained, the training set size, if enhanced features are
+      being used (more on this in Task 4), etc. After this, the classifier
+      gets trained for a default of 3
+      iterations. <code>dataClassifier.py</code> would then print the
+      accuracy of your model on the train and test data sets.</p>
+
+    <p>The <code>-t</code> option passed to the Perceptron training code
+      specifies the number of training data points to read in from memory,
+      while the <code>-s</code> option specifies the size of the test set
+      (the train and test data sets are mutually independent). Since
+      iterating over 100000 points may take some time, you
+      can use 1000 data points instead while developing and testing your
+      code. However, note that all our evaluations will involve train
+      and test data sets with 100000 points.</p>
+
+    
+      <p><h4>Weight Initialization:</h4>One of the starting points to take care of while building your classifier is to initialize your weight matrix correctly.</p>
+      <a href="https://towardsdatascience.com/weight-initialization-techniques-in-neural-networks-26c649eb3b78">Some common approaches for weight Initialization.</a>  
+
+    <p><b>Evaluation:</b> Your classifier will be evaluated by for its
+      accuracy on the <u>test</u> set after the Perceptron has been trained
+      for the default 3 iterations. You will be awarded 3 marks if the
+      accuracy exceeds 70%, otherwise 2 marks if accuracy exceeds 60%,
+      otherwise 1 mark if accuracy exceeds 50%, otherwise 0 marks.
+      You can run the autograder script to test your final implementation.</p>
+
+    <p>AutoGrader Script for this task is as follows.</p>
+    <code> python autograder.py -t 4</code>
+
+
+    <h3> Task 5: Analysing the 1vr perceptron's performance (2 marks)</h3>
+
+    <p>One of the problems with the perceptron is that its performance is
+      sensitive to several practical details, such as how many iterations
+      you train it for, the order you use for the training examples, and how
+      many data points you use. The current code uses a default value of 3
+      training iterations. You can change the number of iterations for the
+      perceptron with the <code>-i iterations</code> option. In practice,
+      you would use the performance on the validation set to figure out when
+      to stop training, but you don't need to implement this stopping
+      criterion for this task.</p>
+
+    <p>Instead, you need to analyse and comment on how the test and train
+      accuracy changes (1) as the total number of data points seen during
+      training change, and (2) as the total size of the training set
+      changes. See details below.</p>
+
+    <ol><li>
+
+	<p><b>Variation with number of training data points 'seen': </b>
+	  In this sub-task, you need to plot the train and test accuracy as
+	  increasing numbers of data points are 'seen' (that is, a point is
+	  examined to determine whether an update needs to be made to the
+	  Perceptron1vr, or the point is already correctly classified, and so no
+	  update is needed) by the classifier.</p>
+
+	<p>You have been provided helper code for this purpose:
+	  the <code>train()</code> function in <code>perceptron1vr.py</code>
+	  writes <code>&lt;examples seen&gt;,&lt;train and test
+	    accuracy&gt;</code> as a comma-separated pair into the
+	  file <code>perceptron1Iterations.csv</code> and <code>perceptron1IterationsTrain.csv</code> 20 times in an
+	  iteration. The plotting
+	  script <code>createGraphIterations.gnuplot</code> uses this csv
+	  file to create the required plot and save it in a file by
+	  name <code>plot_iterations.png</code>. You can modify either of
+	  the two code files mentioned above to modify the plot being
+	  generated.</p>
+     <!-- Feel free to experiment with the various switches and
+	  write a description of your observations and a description of the
+	  nature of the plot in the file <code><b>answers.txt</b></code> in
+	  plain text.</p> -->
+
+	<p>Below are commands to generate the required graph.</p>
+	<ul><li><pre>python dataClassifier.py -c 1vr -t 8000 -s 2000 -v</pre></li>
+	  <li><pre>gnuplot createGraphIterations.gnuplot </pre></li>
+      </ul></li>
+      <li>
+
+	<p><b>Variation with training set size in each iteration: </b>
+	  Here, you will see the influence of training set size on the
+	  accuracy of train and test set, when trained for the same number of
+	  iterations. </p>
+
+	<p>Every time <code>dataClassifier.py</code> is run, it writes a
+	  comma-separated pair of numbers&lt;training set
+	  size&gt;,&lt;accuracy&gt;for the train and the test
+	  sets to files <code>perceptron1vr_train.csv</code>
+	  and <code>perceptron1vr_test.csv</code>. Use <code>createData.sh</code>
+	  (supplied in the zip file) to run the perceptron training on 100, 200,
+	  300, ..., 1000 examples. Create a plot
+	  named <code>plot_training.png</code> by
+	  running <code>createGraphTraining.gnuplot</code>. Below are
+	  commands to generate the required graph.</p>
+
+	<ul><li><pre>./createData.sh </pre></li>
+	  <li><pre>gnuplot createGraphTraining.gnuplot</pre></li>
+      </ul></li>
+
+      <!-- <p>Append your observations and description of the plot obtained in
+	the file <code><b>answers.txt</b></code> (to which you had already
+	written in the previous sub-task). Additionally, answer the following
+	question.
+      </p> -->
+      <ol><li>Imagine a point
+	  on the x axis with 0 training points: that is, a classifier that must
+	  make predictions based on no training data at all! How would such a
+	  classifier make predictions? On this data set, what would be the
+	  expected accuracy of such a classifier?</li>
+      </ol><p><b>Note:</b> The bash script to generate the data for the graph might take a long time to run. You are advised to proceed to subsequent tasks while the script is running.</p>
+
+    </ol><p><b>Evaluation:</b> Sub-tasks 1 and 2 will be evaluated for a
+      total of 2 marks, with the plots and the corresponding explanations
+      and answers all taken into consideration.</p>
+
+    <!-- <h3>Task 3: Implementing 1v1 Perceptron (4 marks)</h3>
+
+    <h4>Implementing the algorithm (3 marks)</h4>
+    <p>In this task, you have to implement the One-vs-One multi-class Perceptron
+      classifier. Here you can think of each weight vector as a binary classifier and so the updates to multiclass perceptron are just updates to multiple relevant binary perceptrons. Fill out code in the <code>train()</code> function at the
+      location indicated in <code>perceptron1v1.py</code>. Using the addition,
+      subtraction, and multiplication functionality of
+      the <code>Counter</code> class in <code>util.py</code>, the perceptron
+      updates should be relatively easy to code. Certain implementation
+      issues have been taken care of for you in <code>perceptron1v1.py</code>,
+      such as the following.</p>
+
+    <ul><li> Iterating over the training data.</li>
+      <li> Predictions for each label/class are performed by a voting scheme, as described above. Therefore, each legal label pair needs its own <code>Counter</code> of weights.</li>
+    </ul><p>Run your code with the following command.</p>
+
+    <p><code>python dataClassifier.py -c 1v1 -t 80000 -s 20000</code></p>
+
+    <h4>Task 3.1 : Comparing the performances of perceptron1vr and perceptron1v1 (1 mark)</h4>
+    <p> Run an experiment using only 800 data points for training while testing on 8000 data points (D1.2). Do this for both perceptron1vr and perceptron1v1. Use the following calls.</p>
+    <p><code>python dataClassifier.py -c 1vr -t 800 -s 8000</code></p>
+    <p><code>python dataClassifier.py -c 1v1 -t 800 -s 8000</code></p>
+
+    <p> Describe the result in the <code><b>answers.txt</b></code>. Also mention the test accuracies
+      obtained while both the perceptron algorithms running on 80000 train and 20000 test,
+      that is the full D1 data set. You need to compare the test accuracies acquired by the two
+      algorithms for both the datasets and state and explain your observations.</p>
+
+    <p><b>Evaluation:</b> Your classifier will be evaluated by for its
+      accuracy on the <u>test</u> set (from D1) after the Perceptron has been trained
+      for the default 3 iterations. You will be awarded 3 marks if the
+      accuracy exceeds 75%, otherwise 2 marks if accuracy exceeds 65%,
+      otherwise 1 mark if accuracy exceeds 55%, otherwise 0 marks. 1 mark is reserved for writing the analysis in answers.txt.
+    </p>
+
+    <p>AutoGrader Script for this task is as follows.</p>
+    <code> python autograder.py -t 3</code>
+ -->
+
+
+    <h3>Task 6: Feature Design (3 marks)</h3>
+
+    <p>This task will require using the data set D2. It requires using the
+      One-vs-rest classifier (Perceptron1vr) implemented in Task 1.
+    </p>
+
+    <p>
+      Building classifiers is only a small part of getting a good system
+      working for a task. Indeed, the main difference between a good
+      classification system and a bad one is usually not the classifier
+      itself, but rather the quality of the
+      features used. Run the Perceptron1vr algorithm implemented in Task 1 on the D2 data set using this command.</p>
+
+    <code>python dataClassifier.py -c 1vr -t 800 -s 200 -k 4 -d d2</code>
+
+    <p>So far, we have only used the simplest possible features:
+      the identity of each pixel (being on/off).
+      You will see a good accuracy (&gt;90%) achieved. Your task is to use <b>at most 5 features</b> i.e. 5 float/int valued features and achieve as much accuracy as possible. You will need to extract more useful features from the data than the pixel values and use only them as features. The <code>EnhancedFeatureExtractorDigit()</code>
+      in <code>dataClassifier.py</code> is your new playground. When
+      analysing your classifiers' results, you should look at some of your
+      errors and look for characteristics of the input that would give the
+      classifier useful information about the label.</p>
+
+    <p>As a concrete illustration, consider the data you have
+      used. In each training point (a binary matrix corresponding to an
+      image), consider the number of separate, connected regions of white
+      pixels. This quantity, although it does not vary across shapes, is an
+      example of a feature that is not directly available to the classifier
+      from the per-pixel information. Further you can add features that
+      cumulatively describe all the per pixel values. You can also try
+      analysing edges and corners. </p>
+
+    
+      <p><a href="https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/">This can be a useful article to understand the some strategies of Feature Designing.</a></p>
+
+
+    <p>If your feature extractor adds new features such as the quantity
+      described above (think of others, too!), the classifier will be able
+      exploit them. Note that some features may require non-trivial
+      computation to extract, so write efficient and correct code. Add your
+      new features for the shape data set (D2) in
+      the <code>EnhancedFeatureExtractorDigit()</code> function.</p>
+
+    <p>We will test your classifier with the following command.</p>
+
+    <code>python dataClassifier.py -c 1vr -t 800 -s 200 -k 4 -d d2 -f</code>
+
+    <p><b>Evaluation:</b> If your new features give you a test
+      accuracy exceeding 85% using the command above, you will get 3 marks. Accuracy exceeding 70% will get 2 marks and
+      accuracy more than 50% will get 1 mark</p>
+    <p><b>Note:</b> Using comments in your code, briefly explain the working of your <code>EnhancedFeatureExtractorDigit()</code>.</p>
+    <p>
+
+    </p><p>AutoGrader Script for this task is as follows.</p>
+    <code> python autograder.py -t 4</code>
+
+    <h3> Task 7: MIRA Classifier (3 Marks) </h3> 
+    A skeleton implementation of the MIRA classifier is provided for you in mira.py. MIRA is an online learner which is closely related to a support vector machine. You will fill in the trainAndTune function.
+    Write the trainAndTune method for the MIRA algorithm and test it using the basic pixel features on the provided datasets (d1 and d2). What classification performance do you get for each? As a sanity check, the command:
+
+     <code> python dataClassifier.py -d d1 -c mira -i 5 </code>
+      should yield very high validation accuracy (close to 100%) and test accuracy above 75%
+    <br> Note that MIRA is also sensitive to the number of iterations you run it and the order you use for the training examples (you should stop after maxIter).
+
+    <h3> Task 8: Comparison between performance of 1vr perceptron and MIRA Classifier (1.5 Marks)</h3> 
+    Using the <code>csv</code> files dumped during training of 1vr perceptron and MIRA classifier, plot the variation in accuracy with number of training iterations and training set size for both. Compare the performance of both with respect to these parameters and explain your observations (if any) in <code>pdf</code> file. You will have to embed both the generated plots too in the pdf file.
+
+    <h3>Submission</h3>
+
+    <p>You are expected to work on this assignment by yourself. You may
+      not consult with your classmates or anybody else about their
+      solutions. You are also not to look at solutions to this assignment or
+      related ones on the Internet. You are allowed to use resources on the
+      Internet for programming (say to understand a particular command or a
+      data structure), and also to understand concepts (so a Wikipedia page
+      or someone's lecture notes or a textbook can certainly be
+      consulted). However, you <b>must</b> list every resource you have
+      consulted or used in a file named <code>references.txt</code>,
+      explaining exactly how the resource was used. Failure to list all
+      your sources will be considered an academic violation.</p>
+
+    
+    <p>Place all files in which you have written code in or modified in a
+      directory named <code>la1-rollno</code>, where <code>rollno</code>
+      is your roll number (say 12345678). Tar and Gzip the directory to
+      produce a single compressed file
+      (say <code>la2-12345678.tar.gz</code>). It must contain the
+      following files. </p>
+
+
+
+    <ol>
+      <li><code>perceptron1vr.py                   </code></li>
+      <li><code> booleanFunc.py                     </code></li>
+      <li><code> convexHull.py                      </code></li>
+      <li><code> mira.py                            </code></li>
+      <li><code>dataClassifier.py                  </code></li>
+      <!-- <li><code>plot_iterations.png                </code></li>
+      <li><code>plot_training.png                  </code></li> -->
+    </ol><p>Submit these compressed file in Moodle, under Lab Assignment 2.</p>
+
+    <div style="position: absolute; width: 0px; height: 0px; overflow: hidden; padding: 0px; border: 0px; margin: 0px;"><div id="MathJax_Font_Test" style="position: absolute; visibility: hidden; top: 0px; left: 0px; width: auto; min-width: 0px; max-width: none; padding: 0px; border: 0px; margin: 0px; white-space: nowrap; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; font-size: 40px; font-weight: normal; font-style: normal; font-family: MathJax;"></div></div>
+    </body></html>
