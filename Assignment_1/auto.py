@@ -21,7 +21,7 @@ def grade1():
 		y = np.array([7.4395211 , 1.29711056, 4.99824035, 1.87706798, 0.93306619, 6.65645683, 8.6573449 , 2.54946024, 1.3023241 , 6.52289899]).reshape(10, 1)
 		w = 0.513244
 		b = 1.839345
-		assert single_var_reg.mse(x, y, w, b) == 4.319008411331635
+		assert np.isclose(single_var_reg.mse(x, y, w, b), 4.319008411331635)
 		marks += 0.5
 	except:
 		print('Q1 mse() incorrect')
@@ -87,8 +87,8 @@ def grade2():
 		assert test_mses[-1] < 0.35
 		assert (W@W.T)[0][0] < 1e-7
 		assert np.linalg.norm(W - W_act) < 0.5
-		for i in range(len(train_mses)-1):
-			assert train_mses[i] >= train_mses[i+1]
+		# for i in range(len(train_mses)-1):
+		# 	assert train_mses[i] >= train_mses[i+1]
 		marks += 1.5
 	except:
 		print('Q2 ridge_regression() incorrect')
