@@ -1,7 +1,6 @@
 import numpy as np
 import utils, p1, perceptron, p3
 
-
 def grade1():
 	print("="*20 + "Grading Problem 1" + "="*20)
 	marks = 0.0
@@ -23,7 +22,6 @@ def grade1():
 		print('Test Error is large')
 	print("Marks obtained in Problem 1: ", marks)
 	return marks
-
 
 def grade2():
 	print("="*20 + "Grading Problem 2" + "="*20)
@@ -52,7 +50,6 @@ def grade2():
 	print("Marks obtained in Problem 2: ", marks)
 	return marks
 
-
 def grade3():
 	print("="*20 + "Grading Problem 3" + "="*20)
 	try:
@@ -68,6 +65,5 @@ def grade3():
 	except:
 		print("Error in Task 3!")
 	return marks
-
 
 print(f'Total Marks = {grade1() + grade2() + grade3()}')
