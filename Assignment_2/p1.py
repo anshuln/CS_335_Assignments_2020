@@ -74,6 +74,7 @@ def ridge_regression(X_train, Y_train, X_test, Y_test, reg, lr=0.003, max_iter=1
 
     return W, train_mses, test_mses
 
+
 def ista(X_train, Y_train, X_test, Y_test, _lambda=0.1, lr=0.001, max_iter=10000):
     '''
     	reg - regularization parameter (lambda in Q2.1 c)
@@ -94,7 +95,7 @@ def ista(X_train, Y_train, X_test, Y_test, _lambda=0.1, lr=0.001, max_iter=10000
         train_mses.append(train_mse)
         test_mses.append(test_mse)
 
-        # TODO: Update w and b using a single step of ISTA. You are not allowed to use a loop here.
+        # TODO: Update w and b using a single step of ISTA. You are not allowed to use loops here.
 
         W_prev = W.copy()
         grad = X_train.T @ (X_train @ W - Y_train)
@@ -176,8 +177,10 @@ if __name__ == '__main__':
     X, Y = load_data2('data2.csv')
     X, Y = preprocess(X, Y)
     X_train, Y_train, X_test, Y_test = split_data(X, Y)
-    # lambdas = [0.1, 0.5, 1, 5, 8, 10]
-    lambdas = [0.1]
+    lambdas = range(1, 61, 4)
+    lambdas = [i/10 for i in lambdas]
+    print(len(lambdas))
+    lambdas = [0.5]
     lam_test_mses = []
     lam_train_mses = []
     for lam in lambdas:
@@ -190,10 +193,12 @@ if __name__ == '__main__':
     # plt.legend(['Train', 'Test'])
     # plt.show()
     # exit(0)
-
-    # plt.plot(list(W))
-    # plt.show()
-    # exit(0)
+    W_list = [i[0] for i in W.tolist()]
+    # print(W_list)
+    # plt.hist(W_list, bins="auto")
+    plt.scatter(range(0, len(W_list)), W_list)
+    plt.show()
+    exit(0)
     # exit(0)
     # W, train_mses, test_mses = ordinary_least_squares(X_train, Y_train, X_test, Y_test)
     W_ridge, train_mses, test_mses = ridge_regression(X_train, Y_train, X_test, Y_test, 10)
