@@ -20,9 +20,11 @@ class Perceptron():
         self.weights = np.zeros((C, D))
         
     def pred(self, x):
+    	### TODO
         return np.argmax(self.weights@(x.reshape(-1, 1)))
+        ### END TODO
 
-    def train(self, X, Y, max_iter):
+    def train(self, X, Y, max_iter=2):
         for _ in range(max_iter):
             for i in range(X.shape[0]):
                 ### TODO
@@ -38,14 +40,16 @@ class Perceptron():
         for i in range(X.shape[0]):
             if self.pred(X[i]) == Y[i]:
                 correct += 1
-        print(f'Accuracy: {correct/n_samples}')
+        return correct/n_samples
 
-X_train, Y_train, X_test, Y_test = get_data('D2')
+if __name__ == '__main__':
+	X_train, Y_train, X_test, Y_test = get_data('D1')
 
-C = max(np.max(Y_train), np.max(Y_test))+1
-D = X_train.shape[1]
+	C = max(np.max(Y_train), np.max(Y_test))+1
+	D = X_train.shape[1]
 
-perceptron = Perceptron(C, D)
+	perceptron = Perceptron(C, D)
 
-perceptron.train(X_train, Y_train, 10)
-perceptron.eval(X_test, Y_test)
+	perceptron.train(X_train, Y_train)
+	acc = perceptron.eval(X_test, Y_test)
+	print(f'Accuracy: {acc}')
