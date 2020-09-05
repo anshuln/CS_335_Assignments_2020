@@ -72,4 +72,5 @@ if __name__ == "__main__":
 	plt.plot(X_lin[:,1],X_lin @ W_1, c='r')
 	plt.plot(X_lin[:,1],X_lin @ W_2, c='b')
 	plt.plot(X_lin[:,1],X_lin @ W_3, color='purple')
+	plt.plot(X_lin[:,1],X_lin @(W_1+W_2+W_3+W_0)/4, color='black')
 	plt.show()
