@@ -27,7 +27,9 @@ if __name__ == "__main__":
 	degree = args.degree
 
 	X_train, Y_train = load_data1('data3_train.csv')
+	Y_train = Y_train/20
 	X_test, Y_test   = load_data1('data3_test.csv')
+	Y_test = Y_test/20
 
 	X_train = prepare_data(X_train,degree)
 	# X_train,Y_train = preprocess(X_train,Y_train)
@@ -75,6 +77,4 @@ if __name__ == "__main__":
 	plt.plot(X_lin[:,1],X_lin @ W_1, c='r')
 	plt.plot(X_lin[:,1],X_lin @ W_2, c='b')
 	plt.plot(X_lin[:,1],X_lin @ W_3, color='purple')
-	# plt.plot(X_lin[:,1],X_lin @ W_4, color='pink')
-	# plt.ylim((-200,200))
 	plt.show()
