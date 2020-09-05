@@ -1,5 +1,5 @@
 import numpy as np
-import utils, p1, perceptron, p3
+import utils, p1, p2, p3
 
 
 def grade1():
@@ -31,12 +31,12 @@ def grade2():
 	accs = [[0.78, 0.70, 0.60], [0.97, 0.90, 0.80]]
 	try:
 		for i, ds in enumerate(['D1', 'D2']):
-			X_train, Y_train, X_test, Y_test = perceptron.get_data(ds)
+			X_train, Y_train, X_test, Y_test = p2.get_data(ds)
 
 			C = max(np.max(Y_train), np.max(Y_test))+1
 			D = X_train.shape[1]
 
-			p = perceptron.Perceptron(C, D)
+			p = p2.Perceptron(C, D)
 
 			p.train(X_train, Y_train)
 			acc = p.eval(X_test, Y_test)

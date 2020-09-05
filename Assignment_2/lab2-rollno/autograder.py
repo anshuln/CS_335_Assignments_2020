@@ -1,5 +1,6 @@
 import numpy as np
-import utils, p1, perceptron, p3
+import utils, p1, p2, p3
+
 
 def grade1():
 	print("="*20 + "Grading Problem 1" + "="*20)
@@ -23,18 +24,19 @@ def grade1():
 	print("Marks obtained in Problem 1: ", marks)
 	return marks
 
+
 def grade2():
 	print("="*20 + "Grading Problem 2" + "="*20)
 	marks = 0
 	accs = [[0.78, 0.70, 0.60], [0.97, 0.90, 0.80]]
 	try:
 		for i, ds in enumerate(['D1', 'D2']):
-			X_train, Y_train, X_test, Y_test = perceptron.get_data(ds)
+			X_train, Y_train, X_test, Y_test = p2.get_data(ds)
 
 			C = max(np.max(Y_train), np.max(Y_test))+1
 			D = X_train.shape[1]
 
-			p = perceptron.Perceptron(C, D)
+			p = p2.Perceptron(C, D)
 
 			p.train(X_train, Y_train)
 			acc = p.eval(X_test, Y_test)
@@ -49,6 +51,7 @@ def grade2():
 		print('Error')
 	print("Marks obtained in Problem 2: ", marks)
 	return marks
+
 
 def grade3():
 	print("="*20 + "Grading Problem 3" + "="*20)
@@ -65,5 +68,6 @@ def grade3():
 	except:
 		print("Error in Task 3!")
 	return marks
+
 
 print(f'Total Marks = {grade1() + grade2() + grade3()}')
