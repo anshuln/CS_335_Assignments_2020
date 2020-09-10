@@ -50,7 +50,7 @@ def ridge_regression(X_train, Y_train, X_test, Y_test, reg, lr=0.003, max_iter=1
     return W, train_mses, test_mses
 
 
-def ista(X_train, Y_train, X_test, Y_test, _lambda=0.1, lr=0.001, max_iter=10000):
+def ista(X_train, Y_train, X_test, Y_test, _lambda=0.1, lr=0.005, max_iter=10000):
     '''
     	reg - regularization parameter (lambda in Q2.1 c)
     	'''
@@ -97,8 +97,8 @@ if __name__ == '__main__':
     X_train, Y_train, X_test, Y_test = split_data(X, Y)
     lambdas = range(1, 61, 4)
     lambdas = [i / 10 for i in lambdas]
-    print(len(lambdas))
-    lambdas = [0.5]
+    # print(len(lambdas))
+    lambdas = [0.1]
     lam_test_mses = []
     lam_train_mses = []
     for lam in lambdas:
@@ -106,11 +106,14 @@ if __name__ == '__main__':
         lam_test_mses.append(test_mses_ista[-1])
         lam_train_mses.append(train_mses_ista[-1])
 
-    # plt.plot(lambdas, lam_train_mses)
-    # plt.plot(lambdas, lam_test_mses)
-    # plt.legend(['Train', 'Test'])
-    # plt.show()
-    # exit(0)
+    print(lam_train_mses, lam_test_mses)
+    exit(0)
+
+    plt.plot(lambdas, lam_train_mses)
+    plt.plot(lambdas, lam_test_mses)
+    plt.legend(['Train', 'Test'])
+    plt.show()
+    exit(0)
     W_list = [i[0] for i in W.tolist()]
     # print(W_list)
     # plt.hist(W_list, bins="auto")

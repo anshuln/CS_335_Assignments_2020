@@ -9,7 +9,7 @@ def grade1():
 		X, Y = utils.load_data2('data2.csv')
 		X, Y = utils.preprocess(X, Y)
 		X_train, Y_train, X_test, Y_test = utils.split_data(X, Y)
-		W, train_mses, test_mses = p1.ista(X_train, Y_train, X_test, Y_test)
+		W, train_mses, test_mses = p1.ista(X_train, Y_train, X_test, Y_test, _lambda=0.1)
 		assert train_mses[-1] < 0.2
 
 		marks += 1.5
