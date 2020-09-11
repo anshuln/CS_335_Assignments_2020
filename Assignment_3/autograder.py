@@ -4,7 +4,7 @@ import p2
 def gradex():
 	print("="*20 + "Grading Problem ???" + "="*20)
 	marks = 0
-	accs = [0.85, 0.70, 0.50]
+	accs = [0.90, 0.85, 0.70, 0.50]
 	try:
 		X_train, Y_train, X_test, Y_test = p2.get_data('D2')
 
@@ -24,8 +24,10 @@ def gradex():
 		if acc>=accs[0]:
 			marks += 2.0
 		elif acc>=accs[1]:
-			marks += 1
+			marks += 1.5
 		elif acc>=accs[2]:
+			marks += 1.0
+		elif acc>=accs[3]:
 			marks += 0.5
 	except:
 		print('Error')
