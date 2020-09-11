@@ -1,5 +1,7 @@
 import numpy as np
 import utils, single_var_reg, multi_var_reg
+import os
+from sys import stderr
 
 def grade1():
 	marks = 0
@@ -13,7 +15,7 @@ def grade1():
 		assert len(X_train) == 82 and len(Y_train) == 82
 		marks += 0.5
 	except:
-		print('Q1 split_data() incorrect')
+		print('Q1 split_data() incorrect',file=stderr)
 		return marks
 
 	try:
@@ -24,7 +26,7 @@ def grade1():
 		assert np.isclose(single_var_reg.mse(x, y, w, b), 4.319008411331635)
 		marks += 0.5
 	except:
-		print('Q1 mse() incorrect')
+		print('Q1 mse() incorrect',file=stderr)
 		return marks
 
 	try:
@@ -37,7 +39,7 @@ def grade1():
 			assert train_mses[i] >= train_mses[i+1]
 		marks += 3
 	except:
-		print('Q1 ordinary_least_squares() incorrect')
+		print('Q1 ordinary_least_squares() incorrect',file=stderr)
 		return marks
 
 	return marks
@@ -51,7 +53,7 @@ def grade2():
 		marks += 0.5
 
 	except:
-		print('Q2 normalize() incorrect')
+		print('Q2 normalize() incorrect',file=stderr)
 		return marks
 
 	try:
@@ -63,7 +65,7 @@ def grade2():
 		assert np.allclose(X_act, X_stud) and np.allclose(Y_act, Y_stud)
 		marks += 1
 	except:
-		print('Q2 preprocess() incorrect')
+		print('Q2 preprocess() incorrect',file=stderr)
 		return marks
 
 	try:
@@ -77,7 +79,7 @@ def grade2():
 			assert train_mses[i] >= train_mses[i+1]
 		marks += 1.5
 	except:
-		print('Q2 ordinary_least_squares() incorrect')
+		print('Q2 ordinary_least_squares() incorrect',file=stderr)
 
 	try:
 		reg = 10
@@ -91,8 +93,50 @@ def grade2():
 		# 	assert train_mses[i] >= train_mses[i+1]
 		marks += 1.5
 	except:
-		print('Q2 ridge_regression() incorrect')
+		print('Q2 ridge_regression() incorrect',file=stderr)
 	
 	return marks
 
-print(f'Marks = {grade1() + grade2()}')
+def grade3():
+	marks = 0
+
+
+	try:
+		X, Y = utils.load_data2('data4.csv')
+		X, Y = utils.preprocess(X, Y)
+		X = X[:,2:]
+		r = np.ones((X.shape[0],))		
+		W = multi_var_reg.weighted_regression(X, Y, r)
+		R = np.diag(r*r)
+
+		W_act = (np.linalg.inv(X.T @ R @ X)) @ (X.T @ R @ Y)
+
+		assert np.allclose(W,W_act)
+		marks += 0.5
+	except:
+		print('Q3 identity incorrect',file=stderr)
+
+	try:
+		X, Y = utils.load_data2('data4.csv')
+		X, Y = utils.preprocess(X, Y)
+		r = X[:,1].reshape((X.shape[0],))		
+		X = X[:,2:]
+		W = multi_var_reg.weighted_regression(X, Y, r)
+		W_act = (np.linalg.inv(X.T @ R @ X)) @ (X.T @ R @ Y)
+
+		assert np.allclose(W,W_act)
+		marks += 0.5
+	except:
+		print('Q3 incorrect',file=stderr)
+	
+	return marks
+
+def grade4():
+	marks = 0
+	try:
+		os.system("python3 problem_4.py --data modified_data_4.csv > /dev/null")
+		marks += 1
+	except:
+		print('Q4 incorrect',file=stderr)
+	return marks
+print(f'Marks = {grade1() + grade2() + grade3() + grade4()}')

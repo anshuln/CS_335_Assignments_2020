@@ -1,39 +1,38 @@
 import numpy as np
-from kmeans import KMeans
+import p2
 
 def gradex():
+	print("="*20 + "Grading Problem ???" + "="*20)
 	marks = 0
+	accs = [0.90, 0.85, 0.70, 0.50]
 	try:
-		data = np.array([[i,i] for i in range(5)])
-		centers = np.array([[1.,1.], [2.,2.], [3.,3.]])
-		op = np.array([[0.5, 0.5], [2.0, 2.0], [3.5, 3.5]])
+		X_train, Y_train, X_test, Y_test = p2.get_data('D2')
 
-		kmeans = KMeans(D=2, n_clusters=3)
-		kmeans.cluster_centers = centers
-		kmeans.train(data, 1)
-		if np.allclose(kmeans.cluster_centers, op):
-			marks += 0.25
+		assert p2.get_features(X_train[0]).size <=5, 'Atmost 5 features are allowed'
+		
+		X_train = np.array([p2.get_features(x) for x in X_train])
+		X_test = np.array([p2.get_features(x) for x in X_test])
 
-		data = np.array([[i+1,i*2.3] for i in range(5)])
-		centers = np.array([[5.,1.], [-1.,2.], [3.,6.]])
-		op = np.array([[5, 1], [1.5, 1.15], [4.0, 6.8999999999999995]])
+		C = max(np.max(Y_train), np.max(Y_test))+1
+		D = X_train.shape[1]
 
-		kmeans = KMeans(D=2, n_clusters=3)
-		kmeans.cluster_centers = centers
-		kmeans.train(data, 1)
-		if np.allclose(kmeans.cluster_centers, op):
-			marks += 0.25
+		p = p2.Perceptron(C, D)
 
-		data = np.array([[i+1,i*2.3] for i in range(3)])
-		centers = np.array([[5, 1], [-1., 2]])
-		op = np.array([[3.0, 4.6], [1.5, 1.15]])
-		kmeans = KMeans(D=2, n_clusters=2)
-		kmeans.cluster_centers = centers
-		kmeans.train(data, 5)
-		if np.allclose(kmeans.cluster_centers, op):
+		p.train(X_train, Y_train)
+		acc = p.eval(X_test, Y_test)
+
+		if acc>=accs[0]:
+			marks += 2.0
+		elif acc>=accs[1]:
+			marks += 1.5
+		elif acc>=accs[2]:
+			marks += 1.0
+		elif acc>=accs[3]:
 			marks += 0.5
 	except:
-		print('Error in k-means')
+		print('Error')
+	print("Marks obtained in Problem ???: ", marks)
 	return marks
+
 
 print(f'Total Marks = {gradex()}')
