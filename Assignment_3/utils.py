@@ -1,30 +1,7 @@
 import numpy as np
 
 
-def load_data1(file):
-    '''
-    Given a file, this function returns X, the regression features
-    and Y, the output
-
-    Args:
-    filename - is a csv file with the format
-
-    feature1,feature2, ... featureN,y
-    0.12,0.31,1.33, ... ,5.32
-
-    Returns:
-    X - numpy array of shape (number of samples, number of features)
-    Y - numpy array of shape (number of samples, 1)
-    '''
-
-    data = np.loadtxt(file, delimiter=',', skiprows=1)
-    X = data[:, :-1]
-    Y = data[:, -1:]
-
-    return X, Y
-
-
-def load_data2(file):
+def load_data(file):
     '''
     Given a file, this function returns X, the features
     and Y, the output

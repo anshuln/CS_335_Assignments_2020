@@ -33,10 +33,6 @@ def one_hot_encode(X, labels):
     return newX
 
 
-def sigma(s):
-    return 1 / (1 + np.exp(-s))
-
-
 class LR:
     def __init__(self, C, D):
         """
@@ -48,12 +44,17 @@ class LR:
         self.weights = np.random.rand(D, C)
 
     def softmax(self, X):
+        """
+        :param X: (N, D) array
+        :return: softmax for given X and current weights
+        """
         exps = np.exp(X @ self.weights)
         return exps/np.sum(exps, axis=1).reshape(-1, 1)
 
     def predict(self, X):
         """
-        x - numpy array of shape (D,)
+        :param X: numpy array of shape (N, D)
+        :return:
         """
         # TODO: Return predicted class for x
         softmax = self.softmax(X)
@@ -61,6 +62,12 @@ class LR:
         # END TODO
 
     def gradient(self, X, Y):
+        """
+        compute gradient wrt weights
+        :param X: (N, D) numpy array
+        :param Y: (N, C) numpy array
+        :return: gradients of softmax wrt weights
+        """
         s = self.softmax(X)
         dW = X.T @ (Y - s)
         return dW/X.shape[0]
@@ -86,7 +93,7 @@ if __name__ == '__main__':
 
     # num_train_samples = args.num_samples
 
-    X_train, Y_train, X_test, Y_test = get_data('D2')
+    X_train, Y_train, X_test, Y_test = get_data(args.dataset)
     print(Y_train)
     Y_train = one_hot_encode(Y_train, np.unique(Y_train))
     print(X_train.shape, X_test.shape, Y_train.shape, np.max(X_train))
