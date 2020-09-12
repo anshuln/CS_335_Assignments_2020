@@ -1,7 +1,7 @@
 import numpy as np
 import argparse
 
-def get_data(dataset,num_train_samples=-1):
+def get_data(dataset):
 	datasets = ['D1', 'D2']
 	assert dataset in datasets, "Dataset {dataset} not supported. Supported datasets {datasets}"
 	X_train = np.loadtxt(f'data/{dataset}/training_data')
@@ -9,7 +9,7 @@ def get_data(dataset,num_train_samples=-1):
 	X_test = np.loadtxt(f'data/{dataset}/test_data')
 	Y_test = np.loadtxt(f'data/{dataset}/test_labels', dtype=int)
 
-	return X_train[:num_train_samples,:], Y_train[:num_train_samples], X_test, Y_test
+	return X_train, Y_train, X_test, Y_test
 
 def get_features(x):
 	'''
@@ -73,14 +73,7 @@ class Perceptron():
 		return correct/n_samples
 
 if __name__ == '__main__':
-	parser = argparse.ArgumentParser(description='Problem 4')
-	parser.add_argument('--num_samples', type=int, default=-1,
-					help='Number of samples to train on')
-	args = parser.parse_args()
-	
-	num_train_samples = args.num_samples
-
-	X_train, Y_train, X_test, Y_test = get_data('D2',num_train_samples)
+	X_train, Y_train, X_test, Y_test = get_data('D2')
 
 	X_train = np.array([get_features(x) for x in X_train])
 	X_test = np.array([get_features(x) for x in X_test])
