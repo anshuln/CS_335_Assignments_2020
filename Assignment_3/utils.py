@@ -19,13 +19,14 @@ def load_data(file):
     # f = open(file, )
     data = np.loadtxt(file, delimiter=',', skiprows=1, dtype='str', encoding="latin1")
     X = data[:, :-1]
-    X = X[:, 5:]
     Y = data[:, -1:].astype(float)
-
+    # TODO modify X to only contain the columns corresponding to relevant features
+    X = X[:, 5:]
+    # END TODO
     return X, Y
 
 
-def split_data(X, Y, train_ratio=0.8):
+def split_data(X, Y):
     '''
     Split data into train and test sets
     The first floor(train_ratio*n_sample) samples form the train set
@@ -40,9 +41,8 @@ def split_data(X, Y, train_ratio=0.8):
     X_train, Y_train, X_test, Y_test
     '''
 
-    ## TODO
+    ## TODO split the songs. Test data should contain 2010 songs and train data should contain all other songs.
 
-    n_train = int(train_ratio * X.shape[0])
     X_train = X[373:]
     Y_train = Y[373:]
     X_test = X[:373]
@@ -82,11 +82,8 @@ def normalize(X):
     Returns:
     (X - mean(X))/std(X)
     '''
-    ## TODO
     return (X - np.mean(X)) / np.std(X)
 
-
-## END TODO
 
 def preprocess(X, Y):
     '''
@@ -102,7 +99,6 @@ def preprocess(X, Y):
             normalize the other features and Y using normalize()
     '''
 
-    ## TODO
     Xn = np.ones((X.shape[0], 1))
     for i in range(1, X.shape[1]):
         try:
@@ -112,5 +108,4 @@ def preprocess(X, Y):
             enc = one_hot_encode(X[:, i], np.unique(X[:, i]))
             Xn = np.concatenate([Xn, enc], axis=1)
     return Xn, Y
-## END TODO
 

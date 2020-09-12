@@ -3,6 +3,7 @@ import perceptron
 from binary_logistic_regression import *
 from utils import *
 
+
 def grade1():
 	print("="*20 + "Grading Problem 1" + "="*20)
 	marks = 0
@@ -45,14 +46,21 @@ def grade2():
 		X, Y = load_data('data/songs.csv')
 		X, Y = preprocess(X, Y)
 		X_train, Y_train, X_test, Y_test = split_data(X, Y)
+		print("=" * 20 + "Grading Problem 2.2(a)(1)" + "=" * 20)
+		try:
+			assert X_test.shape[0] == 373 and X_train.shape[0] == 7191
+			marks += 0.5
+		except:
+			print("Split is wrong.")
+
+		print("=" * 20 + "Grading Problem 2.2(a)(3)" + "=" * 20)
 
 		D = X_train.shape[1]
-
 		lr = BinaryLogisticRegression(D)
 		lr.train(X_train, Y_train)
 		acc = lr.accuracy(X_test, Y_test)
 		f1 = lr.f1_score(X_test, Y_test)
-		print("=" * 20 + "Grading Problem 2.2(a)" + "=" * 20)
+
 		if acc >= 0.8:
 			marks += 3.0
 		else:
