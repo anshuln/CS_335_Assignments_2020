@@ -20,7 +20,7 @@ def load_data(file):
     data = np.loadtxt(file, delimiter=',', skiprows=1, dtype='str', encoding="latin1")
     X = data[:, :-1]
     Y = data[:, -1:].astype(float)
-    # TODO modify X to only contain the columns corresponding to relevant features
+    # TODO modify X to discard columns not relevant in predicting the success of the song.
     X = X[:, 5:]
     # END TODO
     return X, Y

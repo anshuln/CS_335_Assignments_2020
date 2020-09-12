@@ -2,6 +2,7 @@ import numpy as np
 import perceptron
 from binary_logistic_regression import *
 from utils import *
+from multiclass_logistic_regression import *
 
 
 def grade1():
@@ -39,9 +40,7 @@ def grade1():
 
 
 def grade2():
-	print("=" * 20 + "Grading Problem 2" + "=" * 20)
-	marks = 0
-	accs = [0.90, 0.85, 0.70, 0.50]
+	marks = 0.0
 	try:
 		X, Y = load_data('data/songs.csv')
 		X, Y = preprocess(X, Y)
@@ -58,24 +57,52 @@ def grade2():
 		D = X_train.shape[1]
 		lr = BinaryLogisticRegression(D)
 		lr.train(X_train, Y_train)
-		acc = lr.accuracy(X_test, Y_test)
-		f1 = lr.f1_score(X_test, Y_test)
+		preds = lr.predict(X_test)
+		acc = lr.accuracy(preds, Y_test)
+		f1 = lr.f1_score(preds, Y_test)
 
 		if acc >= 0.8:
-			marks += 3.0
+			marks += 2.0
 		else:
-			print("Test accuracy is too large.")
+			print("Test accuracy is too small.")
 
 		print("=" * 20 + "Grading Problem 2.2(c)" + "=" * 20)
+		a = np.array([1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0])
+		p = np.array([1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.1])
+		f_test = lr.f1_score(a, p)
+
 		try:
+			assert abs(f_test - 2/3) < 1e-3
 			assert f1 >= 0.25
-			marks += 2.0
+			marks += 1.5
+			print("0.5 marks will be awarded based on your justification for this task.")
 		except:
 			print("Error in problem 2.2(c)")
 	except:
 		print('Error')
-	print("Marks obtained in Problem 2: ", marks)
+	print("Marks obtained in Problem 2.2(a) and 2.2(c): ", marks)
 	return marks
 
 
-print(f'Total Marks = {grade1() + grade2()}')
+def grade3():
+
+	print("=" * 20 + "Grading Problem 2.2(d)" + "=" * 20)
+	marks = 0.0
+	X_train, Y_train, X_test, Y_test = get_data("D1")
+
+	C = max(np.max(Y_train), np.max(Y_test)) + 1
+	D = X_train.shape[1]
+
+	lr = LogisticRegression(C, D)
+	lr.train(X_train, Y_train)
+	acc = lr.eval(X_test, Y_test)
+	try:
+		assert acc > 0.78
+		marks += 3
+	except:
+		pritn("Test accuracy too small")
+	print("Marks obtained in Problem 2.2(d): ", marks)
+	return marks
+
+
+print(f'Total Autograded Marks = {grade1() + grade2() + grade3()} / 9.0')

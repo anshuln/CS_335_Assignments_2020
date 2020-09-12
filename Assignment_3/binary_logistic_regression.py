@@ -42,22 +42,20 @@ class BinaryLogisticRegression:
 
             # End TODO
 
-    def accuracy(self, X, Y):
+    def accuracy(self, preds, Y):
         """
-        X - numpy array of shape (N, D)
-        Y - numpy array of shape (N, 1)
+        preds - numpy array of shape (N, 1) corresponding to predicted labels
+        Y - numpy array of shape (N, 1) corresponding to true labels
         """
-        preds = self.predict(X)
         accuracy = ((preds == Y).sum()) / len(preds)
         return accuracy
 
-    def f1_score(self, X, Y):
+    def f1_score(self, preds, Y):
         """
-        X - numpy array of shape (N, D)
-        Y - numpy array of shape (N, 1)
+        preds - numpy array of shape (N, 1) corresponding to predicted labels
+        Y - numpy array of shape (N, 1) corresponding to true labels
         """
-        # TODO: calculate F1 score for inputs X and true labels Y
-        preds = self.predict(X)
+        # TODO: calculate F1 score for predictions preds and true labels Y
         tp = ((Y == 1.0) * (preds == Y)).sum()
         fn = ((Y == 1.0)*(preds != Y)).sum()
         fp = ((Y == 0.0) * (preds != Y)).sum()
@@ -78,7 +76,8 @@ if __name__ == '__main__':
 
     lr = BinaryLogisticRegression(D)
     lr.train(X_train, Y_train)
-    acc = lr.accuracy(X_test, Y_test)
-    f1 = lr.f1_score(X_test, Y_test)
+    preds = lr.predict(X_test)
+    acc = lr.accuracy(preds, Y_test)
+    f1 = lr.f1_score(preds, Y_test)
     print(f'Test Accuracy: {acc}')
     print(f'Test F1 Score: {f1}')
