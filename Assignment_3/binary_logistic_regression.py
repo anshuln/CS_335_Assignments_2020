@@ -67,6 +67,7 @@ class BinaryLogisticRegression:
 
 
 if __name__ == '__main__':
+    np.random.seed(335)
 
     X, Y = load_data('data/songs.csv')
     X, Y = preprocess(X, Y)

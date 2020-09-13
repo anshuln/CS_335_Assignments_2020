@@ -4,6 +4,8 @@ from binary_logistic_regression import *
 from utils import *
 from multiclass_logistic_regression import *
 
+np.random.seed(335)
+
 
 def grade1():
 	print("="*20 + "Grading Problem 1" + "="*20)

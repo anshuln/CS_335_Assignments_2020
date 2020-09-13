@@ -96,6 +96,7 @@ class LogisticRegression:
 
 
 if __name__ == '__main__':
+    np.random.seed(335)
 
     X_train, Y_train, X_test, Y_test = get_data("D1")
 
