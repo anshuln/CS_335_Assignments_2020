@@ -44,7 +44,7 @@ class Perceptron():
 		for iter in range(max_iter):
 			for i in range(X.shape[0]):
 				### TODO: Update weights
-				
+
 				### END TODO
 			# print(f'Train Accuracy at iter {iter} = {self.eval(X, Y)}')
 
