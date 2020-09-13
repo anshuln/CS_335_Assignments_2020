@@ -20,20 +20,7 @@ def get_features(x):
 	features - numpy array of shape (D, ) with D <= 5
 	'''
 	### TODO
-	image = x.reshape(50, 50).T
 
-	s1 = 0.0
-	s2 = 0.0
-	s3 = 0.0
-	for x in range(50): 
-		for y in range(50):
-			v1 = abs(image[(x-1)%50,y]-image[(x+1)%50,y])/2.0
-			v2 = abs(image[x,(y-1)%50]-image[x,(y+1)%50])/2.0
-			s1 += (v1**2+v2**2)**0.5
-			s2 += image[x,y]
-			s3 += v1
-
-	return np.array([s1, s2/s1*107])
 	### END TODO
 
 class Perceptron():
@@ -50,17 +37,14 @@ class Perceptron():
 		x - numpy array of shape (D,)
 		'''
 		### TODO: Return predicted class for x
-		return np.argmax(self.weights@(x.reshape(-1, 1)))
+
 		### END TODO
 
 	def train(self, X, Y, max_iter=10):
 		for iter in range(max_iter):
 			for i in range(X.shape[0]):
 				### TODO: Update weights
-				pred = self.pred(X[i])
-				if pred != Y[i]:
-					self.weights[Y[i]] += X[i]
-					self.weights[pred] -= X[i]
+				
 				### END TODO
 			# print(f'Train Accuracy at iter {iter} = {self.eval(X, Y)}')
 
