@@ -9,14 +9,12 @@ def gen_data(X_min=-30,X_max=30,y_min=-30,y_max=30,num_points=5000):
 	return np.column_stack([X_coord,Y_coord])
 
 class KernelLogistic(object):
-
 	def __init__(self, kernel=gaussian_kernel, iterations=100,eta=0.01,lamda=0.05,sigma=1):
 		self.kernel = lambda x,y: kernel(x,y,sigma)
 		self.iterations = iterations
 		self.alpha = None
-		self.eta = eta
-		self.lamda = lamda
-		self.i=0
+		self.eta = eta     # Step size for gradient descent
+		self.lamda = lamda # Regularization term
 
 	def fit(self, X, y):
 		''' find the alpha values here'''
@@ -76,6 +74,7 @@ def k_fold_cv(X,y,k=10,sigma=1.0):
 		errs += batch_size-correct
 	return errs
 	# END TODO
+
 if __name__ == '__main__':
 	data = np.loadtxt("./data/dataset1.txt")
 	X1 = data[:,:2]
@@ -97,6 +96,3 @@ if __name__ == '__main__':
 	plt.ylabel('Mistakes')
 	plt.title('A plot of sigma v/s mistakes')
 	plt.show()
-
-
-		

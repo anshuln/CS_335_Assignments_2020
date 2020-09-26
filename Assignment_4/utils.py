@@ -33,6 +33,7 @@ def split_test(X1, y1, X2, y2, t):
     X_test = np.vstack((X1_test, X2_test))
     y_test = np.hstack((y1_test, y2_test))
     return X_test, y_test
+
 def read_data(filename):
     '''
     Reads the input training data from filename and 

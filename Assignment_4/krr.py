@@ -52,15 +52,13 @@ def read_data(path):
 	return X, Y
 
 class KernelRidgeRegression(object):
-
 	def __init__(self, kernel=gaussian_kernel,lamda=0.01,sigma=1):
 		self.kernel = lambda x,y: kernel(x,y,sigma)
 		self.alpha = None
-		self.lamda = lamda
+		self.lamda = lamda  # Regularization term
 
 	def fit(self, X, y):
 		'''Finds the values of self.alpha given X and y
-		
 		
 		Arguments:
 			X - N x d matrix
@@ -71,13 +69,11 @@ class KernelRidgeRegression(object):
 		# TODO - compute value of alpha and save it to self.alpha
 		kernel = self.kernel(self.train_X,self.train_X)
 		self.alpha = (np.linalg.inv(kernel+self.lamda*np.eye(X.shape[0])) @ Y)
-
 		# END TODO
 	
 
 	def predict(self, X):
 		'''Returns the predictions for the given X
-		
 		
 		Arguments:
 			X - M x d matrix 
@@ -91,44 +87,45 @@ class KernelRidgeRegression(object):
 		# END TODO
 
 if __name__ == '__main__':
-	fig,ax = plt.subplots(nrows=1,ncols=3)
-	X, Y = read_data('./data/problem4_1.csv')
+	fig,ax = plt.subplots(nrows=1,ncols=3, figsize=(9,3))
+	X, Y = read_data('./data/krr.csv')
 	clf = KernelRidgeRegression(gaussian_kernel,0.01,10)
 	clf.fit(X, Y)
 	plot_alongside_data(X, Y, clf.predict,ax[1],title='sigma=10')
 
-	X, Y = read_data('./data/problem4_1.csv')
+	X, Y = read_data('./data/krr.csv')
 	clf = KernelRidgeRegression(gaussian_kernel,0.01,100)
 	clf.fit(X, Y)
 	plot_alongside_data(X, Y, clf.predict,ax[2],title='sigma=100')
 
-	X, Y = read_data('./data/problem4_1.csv')
+	X, Y = read_data('./data/krr.csv')
 	clf = KernelRidgeRegression(gaussian_kernel,0.01,1)
 	clf.fit(X, Y)
 	plot_alongside_data(X, Y, clf.predict,ax[0],title='sigma=1')
 
+	plt.tight_layout()
 	plt.show()
 
-	fig,ax = plt.subplots(nrows=1,ncols=3)
-	X, Y = read_data('./data/problem4_1.csv')
+	fig,ax = plt.subplots(nrows=1,ncols=3,figsize=(9, 3))
+	X, Y = read_data('./data/krr.csv')
 	clf = KernelRidgeRegression(gaussian_kernel,10,10)
 	clf.fit(X, Y)
 	plot_alongside_data(X, Y, clf.predict,ax[1],title='Lambda=10')
 
-	X, Y = read_data('./data/problem4_1.csv')
+	X, Y = read_data('./data/krr.csv')
 	clf = KernelRidgeRegression(gaussian_kernel,100,10)
 	clf.fit(X, Y)
 	plot_alongside_data(X, Y, clf.predict,ax[2],title='Lambda=100')
 
-	X, Y = read_data('./data/problem4_1.csv')
+	X, Y = read_data('./data/krr.csv')
 	clf = KernelRidgeRegression(gaussian_kernel,0.1,10)
 	clf.fit(X, Y)
 	plot_alongside_data(X, Y, clf.predict,ax[0],title='Lambda=0.1')
 
+	plt.tight_layout()
 	plt.show()
 
-
-	X, Y = read_data('./data/problem4_2.csv')
+	X, Y = read_data('./data/kernel_design.csv')
 	clf = KernelRidgeRegression(my_kernel,0.01,1)
 	clf.fit(X, Y)
 	plot_alongside_data(X, Y, clf.predict,ax[0],title='Custom Kernel')
