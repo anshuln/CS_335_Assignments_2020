@@ -1,3 +1,4 @@
+import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -19,17 +20,24 @@ class KMeans():
 
 		### END TODO
 
-	def train(self, data, max_iter):
-		for _ in range(max_iter):
+	def train(self, data, max_iter=10000, epsilon=1e-4):
+		for it in range(max_iter):
 			### TODO
 			### Declare and initialize required variables
 
+
 			### Update labels for each point
+
 
 			### Update cluster centers
 			### Note: If some cluster is empty, do not update the cluster center
 
+
+			### Check for convergence
+			### Stop if distance between each of the old and new cluster centers is less than epsilon
+
 			### END TODO
+		return it
 
 	def replace_by_center(self, data):
 		out = np.zeros_like(data)
@@ -38,11 +46,17 @@ class KMeans():
 		return out
 
 if __name__ == '__main__':
-	image = plt.imread('data/1.png')
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--image', default='1', choices=['1', '2', '3'])
+	parser.add_argument('--k', default=5, type=int)
+
+	args = parser.parse_args()
+
+	image = plt.imread(f'data/{args.image}.png')
 	x = image.reshape(-1, 3)
-	kmeans = KMeans(D=3, n_clusters=10)
+	kmeans = KMeans(D=3, n_clusters=args.k)
 	kmeans.init_clusters(x)
-	kmeans.train(x, 5)
+	kmeans.train(x)
 	out = kmeans.replace_by_center(x)
 	plt.imshow(out.reshape(image.shape))
 	plt.show()

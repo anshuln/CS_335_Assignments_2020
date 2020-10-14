@@ -10,9 +10,9 @@ def grade3():
 
 		kmeans = KMeans(D=2, n_clusters=3)
 		kmeans.cluster_centers = centers
-		kmeans.train(data, 1)
-		if np.allclose(kmeans.cluster_centers, op):
-			marks += 0.25
+		it = kmeans.train(data, 1)
+		if np.allclose(kmeans.cluster_centers, op) and it==0:
+			marks += 0.5
 
 		data = np.array([[i+1,i*2.3] for i in range(5)])
 		centers = np.array([[5.,1.], [-1.,2.], [3.,6.]])
@@ -20,18 +20,18 @@ def grade3():
 
 		kmeans = KMeans(D=2, n_clusters=3)
 		kmeans.cluster_centers = centers
-		kmeans.train(data, 1)
-		if np.allclose(kmeans.cluster_centers, op):
-			marks += 0.25
+		it = kmeans.train(data, 1)
+		if np.allclose(kmeans.cluster_centers, op) and it==0:
+			marks += 0.5
 
 		data = np.array([[i+1,i*2.3] for i in range(3)])
 		centers = np.array([[5, 1], [-1., 2]])
 		op = np.array([[3.0, 4.6], [1.5, 1.15]])
 		kmeans = KMeans(D=2, n_clusters=2)
 		kmeans.cluster_centers = centers
-		kmeans.train(data, 5)
-		if np.allclose(kmeans.cluster_centers, op):
-			marks += 0.5
+		it = kmeans.train(data, 5)
+		if np.allclose(kmeans.cluster_centers, op) and it==1:
+			marks += 1
 	except:
 		print('Error in k-means')
 	return marks
