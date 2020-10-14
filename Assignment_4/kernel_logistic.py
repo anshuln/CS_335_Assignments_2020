@@ -45,7 +45,7 @@ def k_fold_cv(X,y,k=10,sigma=1.0):
 	'''Does k-fold cross validation given train set (X, y)
 	Divide train set into k subsets, and train on (k-1) while testing on 1. 
 	Do this process k times.
-	
+	Do Not randomize 
 	Arguments:
 		X  -- Train set
 		y  -- Train set labels
@@ -67,7 +67,7 @@ def k_fold_cv(X,y,k=10,sigma=1.0):
 		y_train = np.array(y[:i*batch_size].tolist()+y[(i+1)*batch_size:].tolist())
 		X_test = X[i*batch_size:(i+1)*batch_size,:]
 		y_test = y[i*batch_size:(i+1)*batch_size]
-		model = KernelLogistic(gaussian_kernel,100,0.01,0.005,sigma=sigma)
+		model = KernelLogistic(gaussian_kernel,100,0.01,0.05,sigma=sigma)
 		model.fit(X_train,y_train)
 		y_predict = model.predict(X_test) > 0.5
 		correct = np.sum(y_predict == y_test)
@@ -77,16 +77,21 @@ def k_fold_cv(X,y,k=10,sigma=1.0):
 
 if __name__ == '__main__':
 	data = np.loadtxt("./data/dataset1.txt")
-	X1 = data[:,:2]
-	Y1 = data[:,2]
+	X1 = data[:900,:2]
+	Y1 = data[:900,2]
 
-	clf = KernelLogistic(gaussian_kernel,100,0.01,0.05,1)
+	clf = KernelLogistic(gaussian_kernel)
 	clf.fit(X1, Y1)
 
-	y_predict = clf.predict(X1) > 0.5
+	y_predict = clf.predict(data[900:,:2]) > 0.5
 
-	correct = np.sum(y_predict == Y1)
+	correct = np.sum(y_predict == data[900:,2])
 	print("%d out of %d predictions correct" % (correct, len(y_predict)))
+	if correct > 92:
+		marks = 1.0
+	else:
+		marks = 0
+	print(f"You recieve {marks} for the fit function")
 	errs = []
 	sigmas = [0.5, 1, 2, 3, 4, 5, 6]
 	for s in sigmas:  
