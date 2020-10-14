@@ -74,7 +74,7 @@ if __name__ == '__main__':
     X_train, Y_train, X_test, Y_test = split_data(X, Y)
 
     D = X_train.shape[1]
-
+    print("D", D)
     lr = BinaryLogisticRegression(D)
     lr.train(X_train, Y_train)
     preds = lr.predict(X_test)

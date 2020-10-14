@@ -21,7 +21,7 @@ def load_data(file):
     X = data[:, :-1]
     Y = data[:, -1:].astype(float)
     # TODO modify X to discard columns not relevant in predicting the success of the song.
-    X = X[:, 5:]
+    X = X[:, 4:]
     # END TODO
     return X, Y
 

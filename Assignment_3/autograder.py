@@ -70,7 +70,7 @@ def grade2():
 
 		print("=" * 20 + "Grading Problem 2.2(c)" + "=" * 20)
 		a = np.array([1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0])
-		p = np.array([1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.1])
+		p = np.array([1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0])
 		f_test = lr.f1_score(a, p)
 
 		try:
@@ -102,7 +102,7 @@ def grade3():
 		assert acc > 0.78
 		marks += 3
 	except:
-		pritn("Test accuracy too small")
+		print("Test accuracy too small")
 	print("Marks obtained in Problem 2.2(d): ", marks)
 	return marks
 
