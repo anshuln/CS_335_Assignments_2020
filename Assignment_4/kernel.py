@@ -13,7 +13,7 @@ def linear_kernel(X,Y,sigma=None):
     # TODO 
     # NOTE THAT YOU CANNOT USE FOR LOOPS HERE
     return X @ Y.T
-    pass
+    # pass
     # END TODO
 
 def gaussian_kernel(X,Y,sigma=0.1):
@@ -45,5 +45,22 @@ def my_kernel(X,Y,sigma):
     # TODO
     # NOTE THAT YOU CANNOT USE FOR LOOPS HERE 
     return (1 + X @ Y.T)**4
-    pass
+    # pass
     # END TODO
+
+
+def test():
+    data = np.loadtxt("data/test_kernel_func.csv",delimiter=",")
+    X = data[:,:2]
+    Y = data[:,2:4]
+    Z = gaussian_kernel(X,Y,sigma=0.1)
+    W = linear_kernel(X,Y)
+    assert np.allclose(W,data[:,4:14])
+    assert np.allclose(Z,data[:,14:])
+
+
+    # data = np.concatenate([X,Y,W,Z],axis=1)
+    # np.savetxt("data/test_kernel_func.txt",data,delimiter=",")
+# 
+# test()
+# if __name__ == "__main__":

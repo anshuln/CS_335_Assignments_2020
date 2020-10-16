@@ -1,6 +1,6 @@
 import numpy as np
 from kmeans import KMeans
-
+from kernel import *
 def grade3():
 	marks = 0
 	try:
@@ -36,4 +36,23 @@ def grade3():
 		print('Error in k-means')
 	return marks
 
-print(f'Total Marks = {grade3()}')
+def grade1():
+	data = np.loadtxt("data/test_kernel_func.csv",delimiter=",")
+	X = data[:,:2]
+	Y = data[:,2:4]
+	marks = 0
+	try:
+		Z = gaussian_kernel(X,Y,sigma=0.1)-1
+		W = linear_kernel(X,Y) - 1
+		if np.allclose(W,data[:,4:14]):
+			marks += 1
+		else:
+			print("Wrong output for linear_kernel")
+		if np.allclose(Z,data[:,14:]): 
+			marks += 1
+		else:
+			print("Wrong output for RBF kernel")
+		return marks
+	except:
+		print("Error in kernel functions")
+print(f'Total Marks = {grade1() + grade3()}')
