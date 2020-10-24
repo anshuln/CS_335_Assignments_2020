@@ -1,0 +1,281 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+  <link rel="stylesheet" type="text/css" href="./style.css">
+  <title>Lab Assignment 3</title>
+</head>
+
+<body>
+  
+
+<center>
+    <h1> CS335 : AI/ML 2019 <br> Lab Assignment 5</h1>
+    
+</center>
+
+
+<p><b>Please read the following important instructions before getting started on the assignment.</b>
+    </p><ol>
+      <li>The assignment should be completed individually. </li>
+      <li>Do not look at solutions to this assignment or related ones on the Internet.</li>
+      <li>All theory questions must be submitted in the single pdf file </li>
+      <li>All the hyperparameters must be listed in single pdf under Hyperparameters section and resources consulted must be duly listed in the References section of pdf file. Do not upload multiple pdfs.</li>
+      <li><b> Upload Guidelines : </b> Put all the assignment related files in folder with the convention <b>roll_no</b> and zip the folder( do not compress in *.gz) .</li>
+      <li><b> Not following folder guidelines will attract penalty </b></li>
+      <li> All source code are checked with code plagiarism checker. Strict action will be taken again defaulters </li>
+      <li> <b>Any erroneous naming conventions will be penalised </b></li>
+      <li> 1 mark for correct structure </li>
+      </ol>
+
+
+<p>In this assignment, you will design layers required to build both a feed-forward neural network (also
+popularly known as a Multilayer Perceptron classifier) and the Convolution Neural Networks. Feed-forward NNs and CNNs form the basis for modern<i> Deep Learning</i> models. However, the networks with which you will experiment in this assignment will still be relatively small compared to some of modern instances of neural networks.</p>
+<a href="http://deeplearning.net/tutorial/mlp.html">Some readings on MLP</a><br>
+
+<a href="https://machinelearningmastery.com/neural-networks-crash-course/">A crash course to Multilayered Perceptrons</a>
+<br>
+
+<h2>Data Sets</h2>
+
+<a href="">Link to data- will be uploaded</a>.
+
+<p>To test your code, you are provided a set of toy examples (1
+and 2 below), each a 2-dimensional, 2-class problem. You are also
+provided tools to visualise the performance of the neural networks you
+will train on these problems. The plots show the true separating boundary in
+blue. Each data set has a total of 10,000 examples, divided into a
+training set of 8000 examples, validation set of 1000 examples and
+test set of 1000 examples.</p>
+
+<p>Data set 3 is the MNIST data set collection of images handwritten digits.</p>
+
+<p>Data set 4 is the CIFAR-10 data set collection of images of commonly seen things segregated into 10 classes.</p>
+
+<p>
+<center>
+<table>
+<tr>
+    <img src="./task1.png" width = "310px" alt="task1">
+    <img src="./task2.png" width = "310px" alt="task2">
+</tr>
+</table>
+</center>
+</p>
+
+<h3>XOR Data  (Left)</h3>
+<p>
+  The input <code>X</code> is a list of 2-dimensional vectors. Every example <code>X</code><sub>i</sub> is represented by a 2-dimensional vector <code>[x,y]</code>. The output <code>y</code><sub>i</sub> corresponding to the i<sup>th</sup> example is either 0 or 1. The labels follow XOR-like distribution. That is, the first and third quadrant has same label (<code>y</code><sub>i</sub> = 1) and the second and fourth quadrant has same label (<code>y</code><sub>i</sub> = 0) as shown in Figure 1.
+</P>
+
+<h3>Semicircle Data (Right)</h3>
+<p>
+  The input <code>X</code> is a list of 2-dimensional vectors. Every example <code>X</code><sub>i</sub> is represented by a 2-dimensional vector <code>[x,y]</code>. The output <code>y</code><sub>i</sub> corresponding to the i<sup>th</sup> example is either 0 or 1. Each set of label (<code>y</code><sub>i</sub> = 1 and <code>y</code><sub>i</sub> = 0 ) is arranged approximately on the periphery of a semi circle of unknown radius <code>R</code>  with some spread <code>W</code> as shown in Figure 2.
+</p>
+
+<h3>MNIST Data</h3>
+<p>
+  We use the <a href="http://yann.lecun.com/exdb/mnist/">MNIST data set</a> which contains a collection of handwritten numerical digits (0-9) as 28x28-sized binary images. Therefore, input <code>X</code> is represented as a vector of size 784. These images have been size-normalised and centred in a fixed-size image. MNIST provides a total 70,000 examples, divided into a test set of 10,000 images and a training set of 60,000 images. In this assignment, we will carve out a validation set of 10,000 images from the MNIST training set, and use the remaining 50,000 examples for training.
+</p>
+
+<h3>CIFAR 10 Data</h3>
+<p>
+  We use the <a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10 data set</a> which contains 60,000 32x32 color(RGB) images in 10 different classes. The 10 different classes represent <b>airplanes, cars, birds, cats, deer, dogs, frogs, horses, ships, and trucks</b>. There are 6,000 images of each class. These 60,000 images are divided into a test set of 10,000 images and a training set of 50,000 images. In this assignment, we will carve out a validation set of 10,000 images from the CIFAR-10 training set, and use the remaining 40,000 examples for training.
+</p>
+
+<p>In this assignment, we will code a feed-forward neural network and convolution neural network from scratch using python3 and the <a href="http://www.numpy.org/"> numpy </a> library. </p>
+
+<hr>
+
+
+<h2>Code</h2> 
+
+<p>The base code for this assignment is available in the compressed file</a>. Below is the list of files present in the directory.</p> 
+
+<table style="width:100%"><tbody>
+  <tr>
+    <td><b>File Name</b></td>
+    <td><b>Description</b></td>
+  </tr>
+
+  <tr>
+    <td><code>layers.py</code></td>
+    <td>This file contains base code for the various layers of neural network you will have to implement.</td>
+  </tr>
+
+  <tr>
+    <td><code>nn.py</code></td>
+    <td>This file contains base code for the neural network implementation.</td>
+  </tr>
+
+
+  <tr>
+    <td><code>visualize.py</code></td>
+    <td>This file contains the code for visualisation of the neural network's predictions on toy data sets.</td>
+  </tr>
+
+  <tr>
+    <td><code>visualizeTruth.py</code></td>
+    <td>This file contains the code to visualise actual data distribution of toy data sets.</td>
+  </tr>
+
+  <tr>
+      <td><code>tasks.py</code></td>
+      <td>This files contains base code for the tasks that you need to implement.</td>
+  </tr>
+  
+  <tr>
+      <td><code>test.py</code></td>
+      <td>This file contains base code for testing your neural network on different data sets.</td>
+  </tr>
+
+  <tr>
+    <td><code>util.py</code></td>
+    <td>This file contains some of the methods used by above code files.</td>
+  </tr>
+
+	<tr>
+    <td><code>autograder.py</code></td>
+    <td>This is used for testing your Task 1 and Task 2</td>
+  </tr>
+</tbody></table>
+
+<p>All data sets are provided in the <code>datasets</code> directory.</p>
+
+<hr>
+
+<h4> Methods you need to implement </h4>
+<p>You will only have to write code inside the following functions. You need to implement these functions for all the layers in the layer.py and nn.py</p>
+
+<ul>
+  <li> <code>forwardpass</code></li>  
+  <li> <code>backwardpass</code></li>
+  <li> <code>relu_of_X</code>
+  <li> <code>softmax_of_X</code>
+  <li> <code>gradient_relu_of_X</code>
+  <li> <code>gradient_softmax_of_X</code>
+  <li> <code>computeLoss</code> : Strictly Use cross-entropy loss for computing loss
+  <li> <code>backpropagate</code>
+  <li> <code>feedforward</code></li>
+
+</ul>
+
+<hr>
+<h2>Layers: Explanation and References</h2>
+
+<ul>
+  <li> <code>Fully Connected Layer</code>: This layer contains weights in form of <code>in_nodes X out_nodes </code>. Forward pass in such a layer is simply matrix multiplication of activations from previous layer and its weights and addition of bias to it. <code> A_new = A_old X Curr_Wts + Bias</code>. Similarly, backpropagation updates can be obtained by simple matrix multiplications. <br><br></li>
+
+  
+  <li> <code>Convolution Layer</code>: This layer contains weights in form of numpy array of form (out_depth, in_depth, filter_rows, filter_cols). Forward pass in such layer can be obtained from correlation of filter with the previous layer for all its depths and addition of biases to this sum. Backwardpass for such a system of weights results in another convolution that you need to figure out.<br><br></li>
+  <li> <code>AvgPooling Layer</code>: This layer is essentially used to reduce the weights used in convolution. It downsamples the previous layer by a factor stride and filter (<b>in our case both can be assumed to the same</b>). While downsampling one could have used many operations, including taking mean, median, max, min, etc,. Here we take the <b>Average</b> operation for downsampling. This doesn't effect the depth of the input. Forward pass in such layer can be obtained by taking Mean in a grid of elements of <code>size = filter_size</code>. Backwardpass for such a system just upsamples the numpy multidimensional array, scaling them by same factor that was used in downsampling.<br><br></li>
+
+  <li> <code>Flatten Layer</code>: This layer is inserted to convert 3d structure of convolution layers to 1d nodes required for fully connected layers.<br><br></li>  
+
+</ul>
+
+
+<p>Refer to <a href="http://cs231n.github.io/convolutional-networks/">this link</a> and to <a href="https://www.jefkine.com/general/2016/09/05/backpropagation-in-convolutional-neural-networks/">this link</a> for further clarifications on how to implement forward and backward propagation across average-pooling and convolution layers</p>
+<p> Following are some key numpy functions that will speed up the computation: <code>tile, transpose, max, argmax, repeat, dot, matmul</code>. To perform element-wise product between two vectors or matrices of the same dimension, simply use the * operator. For further reference on these functions refer to <a href="https://docs.scipy.org/doc/numpy/"> numpy</a> documentation.</p>
+
+
+<br>
+<div align="center" style="float:CENTER; margin:0 15px 5px 0;">
+    <img src="./CNN.png" alt="A model for CNN layers">
+</div>
+<p align="center">A CNN with 2 Convolution layers, 1 Pooling Layer and 1 Fullyconnected layer. Flatten Layer b/w C3 and D4 is implicit in the figure <br>
+<font size="1">(Image source: https://www.researchgate.net/figure/Structure-of-a-typical-convolutional-neural-network-CNN_fig3_323938336.)</font>
+</p>
+
+<hr>
+<h3>Task 1: Implement activation functions (1 + 1 + 1 + 2 = 5 marks) </h3> 
+  
+<p>In this task, you will complete the various activation functions namely <code>relu_of_X</code>,  <code>softmax_of_X</code>,   <code>gradient_relu_of_X</code>,  <code>gradient_softmax_of_X</code> methods in <code> layers.py </code> file.
+ <h4> Testing your implementation</h4>
+ <p>
+ To test your implementations, run the following code.
+ </br>
+ <center><code> python3 autograder.py -t 1</code></center></br>
+ <b> You are allowed to add/remove arguments/functions/code inside code except autograder.py and test.py. If autograder fails to run, we will award 0 marks. Ensure that code is optimized and vectorized and refrain from excess use of for loops. </b>
+ 
+
+<hr>
+<h3>Task 2: Training and Testing (2 + 2 + 3 + 5 + 2 = 14 Marks) </h3> 
+<p> In this task, you are required to complete the relevant methods in <code> layers.py </code>  and <code> nn.py </code> file. You should (will have to) use the matrix form of the backpropagation algorithm for quicker and more efficient computation. You have to report neural networks with <i>minimal</i> topologies. 
+<b> You are not allowed to use any other activation functions except ReLU, Softmax </b>.
+Ensure that code runs with randomized seed values. We will penalise if your code doesn't run properly on random seed values.
+
+<h3>  Evaluation over Data Sets </h3>
+
+<h4>Task 2.1: XOR Data set (2 Marks)</h4>
+<p>
+Complete <code>taskSquare()</code> in <code>tasks.py</code>. To test your backpropagation code on this data set, run the following command
+<center><code>python3 test.py 1 seedValue </code></center></br>
+To visualise ground truth, run the following command.
+<center><code>python3 visualizeTruth.py 1</code></center>
+</p>
+
+<h4>Task 2.2: SemiCircle Data set (2 Marks)</h4>
+<p>
+Complete <code>taskSemiCircle()</code> in <code>tasks.py</code>.
+To test your backpropagation code on this data set, run the following command.
+<center><code>python3 test.py 2 seedValue </code></center></br>
+To visualise ground truth, run the following command.
+<center><code>python3 visualizeTruth.py 2</code></center>
+</p>
+
+<h4>Task 2.3: Compute Accuracy over MNIST (using Feed-Forward Neural Network) (3 marks) </h4> 
+<p> 
+The <a href="http://deeplearning.net/data/mnist">MNIST </a> data set is given as <code> mnist.pkl.gz </code> file.
+The data is read using the <code>  readMNIST() </code> method implemented in <code>  util.py </code> file.
+</p>
+
+<p>
+  Your are required to instantiate a NeuralNetwork class object (that uses FullyConnectedLayers) and train the neural network using the training data from MNIST data set. Choose appropriate hyper parameters for the training of the neural network. To obtain full marks, your network should be able to achieve a test accuracy of 90% or more across many different random seeds.
+</p>
+
+<p>Complete <code>taskMnist()</code> in <code>tasks.py</code>. To test your backpropagation code on this data set, run the following command.<br>
+<center> <code> python3 test.py 3 seedValue</code><br> </center> <br>
+Here <code>  seedValue </code> is a suitable integer value to initialise the seed for random-generator.
+</p> 
+
+<h4>Task 2.4: Compute Accuracy over CIFAR (using Convolution Neural Network) (5 marks) </h4> 
+<p> The <a href="https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz">CIFAR-10 </a> data set is given in <code> cifar-10 </code> directory. The data is read using the <code>  readCIFAR10() </code> method implemented in <code>  util.py </code> file.</p>
+
+<p>
+  Your are required to instantiate a NeuralNetwork class object (with at least one convolutional layer) and train the neural network using the training data from CIFAR data. You are required to choose appropriate hyperparameters for the training of the neural network. To obtain full marks, your network should be able to achieve a test accuracy of 35% or more. Note that we require lower accuracies than is reported in the literature as CNNs take a lot of time to train. Moreover, we have added code to reduce the size of training, test and validation set (see <code>tasks.py</code>). You are free to choose the size of data to use for training, testing and validation as you see fit. For submission remember to save the weights is the file <code>model.npy</code> (look <code>nn.py train()</code> function for more details) for your trained model and also <b>uncomment line 90 in <code>tasks.py</code></b>. Also list all your hyperparameters and the random seed used (seedValue) for training on this task (in a file named <code>observations.txt</code>), so we can reproduce your results exactly.<br>
+  <b>NOTE:</b> You will require lot of time to train (at least 4-5 hrs) in order to get the above accuracies. <b>So start working on this assignment as early as possible, leaving 1-2 days for training alone.</b> <br>
+</p>
+
+<p>Complete <code>taskCifar10()</code> in <code>tasks.py</code>. To test your backpropagation code on this data set, run the following command.<br>
+<center> <code> python3 test.py 4 seedValue</code><br> </center> <br>
+</p> 
+
+<h4>Task 2.5: Describe the results (2 marks) </h4> 
+<p> In this task, you are required to report hyperparameters (learning rate, number of hidden layers, number of nodes in each hidden layer, batchsize and number of epochs) of Neural Network for each of the above 4 tasks that lead to minimal-topology neural networks that pass the test: that is, with the minimal number of nodes you needed for each task. For example, in case of a linearly separable data set, you should be able to get very high accuracy with just a single hidden node. Write your observations in <code>rollno.pdf</code>. Remember to write your name in the pdf file.
+</p>
+
+<hr>
+<h2>Submission</h2> 
+
+    <p>You are expected to work on this assignment by yourself. You may
+      not consult with your classmates or anybody else about their
+      solutions. You are also not to look at solutions to this assignment or
+      related ones on the Internet. You are allowed to use resources on the
+      Internet for programming (say to understand a particular command or a
+      data structure), and also to understand concepts (so a Wikipedia page
+      or someone's lecture notes or a textbook can certainly be
+      consulted).</p>
+
+
+In <code>tasks.py</code>, you will complete Tasks 2.1, 2.2, 2.3 and 2.4 by editing corresponding snippets of code. <br> 
+In <code>rollno.pdf</code>, you will report the parameters (neural net architecture, learning rate, batch size etc., and also the random seed, for tasks 2.1, 2.2, 2.3 and 2.4. Also add relevant explanations to justify the topology being minimal.<br>
+Also, submit the trained model file for CIFAR-10 Task 2.4 Model in <b><code>model.npy</code></b>.
+
+</p>
+<p> Remember to test your solution before submission using the autograder provided. <br><br> <center><code>python3 autograder.py -t task_num</code></center><br><br> where <code>task_num</code> can be one of {1,2}.
+</p>
+<p>Put all .py files in a directory named as your roll_no, and mention any changes in rollno.pdf file. Compress file using only zip command and name it as <b>rollno.zip</b> and upload it in moodle under Lab Assignment 5.  
+</p>
+</body>
+</html>
