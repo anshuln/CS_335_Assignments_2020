@@ -5,16 +5,16 @@ import itertools
 
 class NeuralNetwork:
 
-	def __init__(self, out_nodes, alpha):
+	def __init__(self, out_nodes, lr):
 		# Method to initialize a Neural Network Object
 		# Parameters
 		# out_nodes - number of output nodes
 		# alpha - learning rate
 		# batchSize - Mini batch size
 		# epochs - Number of epochs for training
-		self.alpha = alpha
 		self.layers = []
 		self.out_nodes = out_nodes
+		self.alpha = lr
 
 	def addLayer(self, layer):
 		# Method to add layers to the Neural Network

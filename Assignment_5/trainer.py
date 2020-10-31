@@ -7,19 +7,20 @@ import numpy as np
 import sys
 
 from util import *
-from visualize import *
 from layers import *
 
 class Trainer:
 	def __init__(self,dataset_name):
+		self.save_model = False
 		if dataset_name == 'MNIST':
 			self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readMNIST()
 			# Add your network topology along with other hyperparameters here
-			# self.batch_size = 
-			# self.epochs = 
-			# self.lr = 
-			# self.nn = 
-			# nn.addLayer()
+			self.batch_size = 64
+			self.epochs = 20
+			# self.lr = 0.001
+			self.nn = nn.NeuralNetwork(out_nodes=10,lr=0.001)    
+			self.nn.addLayer(FullyConnectedLayer(784,10,activation='softmax'))
+
 
 		if dataset_name == 'CIFAR10':
 			self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readCIFAR10()
@@ -39,8 +40,7 @@ class Trainer:
 			# self.lr = 
 			# self.nn = 
 			# nn.addLayer()
-
-	def train(self, trainX, trainY, validX=None, validY=None, printTrainStats=True, printValStats=True):
+	def train(self, verbose=True):
 		# Method for training the Neural Network
 		# Input
 		# trainX - A list of training input data to the neural network
@@ -58,14 +58,14 @@ class Trainer:
 
 		for epoch in range(self.epochs):
 			# A Training Epoch
-			if printTrainStats or printValStats:
+			if verbose:
 				print("Epoch: ", epoch)
 
 			# TODO
 			# Shuffle the training data for the current epoch
 
-			X = np.asarray(trainX)
-			Y = np.asarray(trainY)
+			X = np.asarray(self.XTrain)
+			Y = np.asarray(self.YTrain)
 			perm = np.arange(X.shape[0])
 			np.random.shuffle(perm)
 			X = X[perm]
@@ -80,7 +80,7 @@ class Trainer:
 			for batchNum in range(numBatches):
 				# print(batchNum,"/",numBatches) # UNCOMMENT if model is taking too long to train
 				XBatch = np.asarray(X[batchNum*self.batch_size: (batchNum+1)*self.batch_size])
-				YBatch = np.asarray(Y[batchNum*self.batch_size: (batchNum+1)*self.batchSize])
+				YBatch = np.asarray(Y[batchNum*self.batch_size: (batchNum+1)*self.batch_size])
 
 				# Calculate the activations after the feedforward pass
 				activations = self.nn.feedforward(XBatch)  
@@ -101,10 +101,10 @@ class Trainer:
 			# END TODO
 			# Print Training loss and accuracy statistics
 			trainAcc /= numBatches
-			if printTrainStats:
-				print("Epoch ", epoch, " Training Loss=", loss, " Training Accuracy=", trainAcc)
+			if verbose:
+				print("Epoch ", epoch, " Training Loss=", trainLoss, " Training Accuracy=", trainAcc)
 			
-			if saveModel:
+			if self.save_model:
 				model = []
 				for l in self.layers:
 					print(type(l).__name__)
@@ -115,10 +115,10 @@ class Trainer:
 				print("Model Saved... ")
 
 			# Estimate the prediction accuracy over validation data set
-			if validX is not None and validY is not None and printValStats:
-				_, validAcc = self.validate(validX, validY)
+			if self.XVal is not None and self.YVal is not None and verbose:
+				_, validAcc = self.nn.validate(self.XVal, self.YVal)
 				print("Validation Set Accuracy: ", validAcc, "%")
 
-		pred, acc = self.nn.validate(XTest, YTest)
+		pred, acc = self.nn.validate(self.XTest, self.YTest)
 		print('Test Accuracy ',acc)
 
