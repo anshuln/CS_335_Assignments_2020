@@ -95,4 +95,5 @@ def grade2():
 	
 	return marks
 
-print(f'Marks = {grade1() + grade2()}')
+# print(f'Marks = {grade1() + grade2()}')
+print(grade2())
