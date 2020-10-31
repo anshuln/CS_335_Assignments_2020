@@ -102,7 +102,7 @@ def grade3():
 		assert acc > 0.78
 		marks += 3
 	except:
-		pritn("Test accuracy too small")
+		print("Test accuracy too small")
 	print("Marks obtained in Problem 2.2(d): ", marks)
 	return marks
 
