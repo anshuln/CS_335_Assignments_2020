@@ -15,11 +15,11 @@ class Trainer:
         if dataset_name == 'MNIST':
             self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readMNIST()
             # Add your network topology along with other hyperparameters here
-            self.batch_size = 64
-            self.epochs = 20
+            # self.batch_size = 
+            # self.epochs = 
             # self.lr = 0.001
-            self.nn = nn.NeuralNetwork(out_nodes=10,lr=0.001)    
-            self.nn.addLayer(FullyConnectedLayer(784,10,activation='softmax'))
+            # self.nn = 
+            # self.nn.addLayer()
 
 
         if dataset_name == 'CIFAR10':
@@ -40,6 +40,25 @@ class Trainer:
             # self.lr = 
             # self.nn = 
             # nn.addLayer()
+
+        if dataset_name == 'square':
+            self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readXOR()
+            # Add your network topology along with other hyperparameters here
+            # self.batch_size = 
+            # self.epochs = 
+            # self.lr = 
+            # self.nn = 
+            # nn.addLayer()
+
+
+        if dataset_name == 'circle':
+            self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readCircle()
+            # Add your network topology along with other hyperparameters here
+            # self.batch_size = 
+            # self.epochs = 
+            # self.lr = 
+            # self.nn = 
+            # nn.addLayer()         
     def train(self, verbose=True):
         # Method for training the Neural Network
         # Input
@@ -84,7 +103,7 @@ class Trainer:
             
             if self.save_model:
                 model = []
-                for l in self.layers:
+                for l in self.nn.layers:
                     print(type(l).__name__)
                     if type(l).__name__ != "AvgPoolingLayer" and type(l).__name__ != "FlattenLayer": 
                         model.append(l.weights) 

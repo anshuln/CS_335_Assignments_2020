@@ -12,16 +12,16 @@ from trainer import *
 from util import *
 
 if __name__ == '__main__':
-	parser = argparse.ArgumentParser()
-	""" Arguments: arg """
-	parser.add_argument('--dataset')
-	parser.add_argument('--verbose',action='store_true')
-	parser.add_argument('--seed',type=int, default=335)
+    parser = argparse.ArgumentParser()
+    """ Arguments: arg """
+    parser.add_argument('--dataset')
+    parser.add_argument('--verbose',action='store_true')
+    parser.add_argument('--seed',type=int, default=335)
 
-	
-	args = parser.parse_args()
+    
+    args = parser.parse_args()
 
-	np.random.seed(args.seed)
-	trainer = Trainer(args.dataset)
-	trainer.train(args.verbose)
+    np.random.seed(args.seed)
+    trainer = Trainer(args.dataset)
+    trainer.train(args.verbose)
 

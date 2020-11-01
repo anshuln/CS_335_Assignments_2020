@@ -109,10 +109,6 @@ class ConvolutionLayer:
         self.biases = np.random.normal(0,0.1,self.out_depth)
         
 
-    def getOriginalIndex(self,row,col):
-        #Return centered index of original image given coordinates of next act
-        return row*self.stride,row*self.stride+self.filter_row,col*self.stride,col*self.stride+self.filter_col
-        # pass
     def forwardpass(self, X):
         # INPUT activation matrix       :[n X self.in_depth X self.in_row X self.in_col]
         # OUTPUT activation matrix      :[n X self.out_depth X self.out_row X self.out_col]

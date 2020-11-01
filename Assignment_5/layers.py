@@ -329,8 +329,8 @@ class MaxPoolingLayer:
                 x1,x2,y1,y2 = self.getOriginalIndex(row,col)
                 temp_del = np.zeros((n,self.in_depth,self.filter_row*self.filter_col))
                 for i in range(temp_del.shape[0]):
-                	for j in range(temp_del.shape[1]):
-		                temp_del[i,j,self.max_ind[i,j,row,col].astype('int')] = 1.
+                    for j in range(temp_del.shape[1]):
+                        temp_del[i,j,self.max_ind[i,j,row,col].astype('int')] = 1.
                 temp_del = temp_del.reshape((n,self.in_depth,self.filter_row,self.filter_col))
                 output_delta[:,:,x1:x2,y1:y2] += temp_del*np.tile(delta[:,:,row,col][:,:,None,None],(1,1,self.filter_row,self.filter_col))
         return output_delta
