@@ -150,7 +150,6 @@ class AvgPoolingLayer:
     def __init__(self, in_channels, filter_size, stride):
         # Method to initialize a Convolution Layer
         # Parameters
-        # in_channels - list of 3 elements denoting size of input for max_pooling layer
         # filter_size - list of 2 elements denoting size of kernel weights for convolution layer
 
         # NOTE: Here we assume filter_size = stride
@@ -196,7 +195,6 @@ class MaxPoolingLayer:
     def __init__(self, in_channels, filter_size, stride):
         # Method to initialize a Convolution Layer
         # Parameters
-        # in_channels - list of 3 elements denoting size of input for max_pooling layer
         # filter_size - list of 2 elements denoting size of kernel weights for convolution layer
 
         # NOTE: Here we assume filter_size = stride
