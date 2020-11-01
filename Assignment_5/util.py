@@ -92,7 +92,7 @@ def split(X,Y):
 
 	return XTrain, YTrain, XVal, YVal, XTest, YTest
 
-def readSquare():
+def readXOR():
 	f=open('datasets/square.pkl', 'rb')
 	X, Y = cPickle.load(f)
 	f.close()
@@ -101,7 +101,7 @@ def readSquare():
 
 
 
-def readSemiCircle():
+def readCircle():
 	f=open('datasets/semicircle.pkl','rb')
 	X, Y = cPickle.load(f)
 	f.close()

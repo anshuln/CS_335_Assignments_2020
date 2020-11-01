@@ -40,6 +40,37 @@ class Trainer:
 			# self.lr = 
 			# self.nn = 
 			# nn.addLayer()
+
+		if dataset_name == 'XOR':
+			self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readXOR()
+
+			# self.save_model = True
+			self.model_name = "model.npy"
+
+			# Add your network topology along with other hyperparameters here
+			self.batch_size = 10
+			self.epochs = 15
+			self.lr = 1e-3
+			self.nn = nn.NeuralNetwork(out_nodes=2, lr=self.lr)
+			# nn.addLayer()
+			self.nn.addLayer(FullyConnectedLayer(2, 4, 'relu'))
+			self.nn.addLayer(FullyConnectedLayer(4, 2, 'softmax'))
+
+		if dataset_name == 'Circle':
+			self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readCircle()
+
+			# self.save_model = True
+			self.model_name = "model.npy"
+
+			# Add your network topology along with other hyperparameters here
+			self.batch_size = 10
+			self.epochs = 10
+			self.lr = 1e-3
+			self.nn = nn.NeuralNetwork(out_nodes=2, lr=self.lr)
+			# nn.addLayer()
+			self.nn.addLayer(FullyConnectedLayer(2, 2, 'relu'))
+			self.nn.addLayer(FullyConnectedLayer(2, 2, 'softmax'))
+
 	def train(self, verbose=True):
 		# Method for training the Neural Network
 		# Input

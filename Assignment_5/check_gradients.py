@@ -14,12 +14,11 @@ YTrain = YTrain[0:10, :]
 nn1 = nn.NeuralNetwork(10, 1)
 
 nn1.addLayer(ConvolutionLayer([3, 32, 32], [3, 3], 4, 1, 'relu'))
-nn1.addLayer(MaxPoolingLayer([4, 30, 30], [3, 3], 3))
-# nn1.addLayer(AvgPoolingLayer([4, 30, 30], [2, 2], 2))
-# nn1.addLayer(ConvolutionLayer([4, 15, 15], [4, 4], 4, 1, 'relu'))
-# nn1.addLayer(MaxPoolingLayer([4, 12, 12], [2, 2], 2))
+nn1.addLayer(AvgPoolingLayer([4, 30, 30], [2, 2], 2))
+nn1.addLayer(ConvolutionLayer([4, 15, 15], [4, 4], 4, 1, 'relu'))
+nn1.addLayer(MaxPoolingLayer([4, 12, 12], [2, 2], 2))
 nn1.addLayer(FlattenLayer())
-nn1.addLayer(FullyConnectedLayer(400, 10, 'softmax'))
+nn1.addLayer(FullyConnectedLayer(144, 10, 'softmax'))
 
 delta = 1e-7
 r = nn1.layers[0].weights.shape[2]
