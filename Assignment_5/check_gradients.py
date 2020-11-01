@@ -27,15 +27,15 @@ c = nn1.layers[0].weights.shape[3]
 num_grad = np.zeros((r, c))
 
 for i in range(r):
-    for j in range(c):
-        activations = nn1.feedforward(XTrain)
-        loss1 = nn1.computeLoss(YTrain, activations)
-        nn1.layers[0].weights[0, 0, i, j] += delta
-        activations = nn1.feedforward(XTrain)
-        loss2 = nn1.computeLoss(YTrain, activations)
-        num_grad_ij = (loss2 - loss1) / delta
-        num_grad[i, j] = num_grad_ij
-        nn1.layers[0].weights[0, 0, i, j] -= delta
+	for j in range(c):
+		activations = nn1.feedforward(XTrain)
+		loss1 = nn1.computeLoss(YTrain, activations)
+		nn1.layers[0].weights[0, 0, i, j] += delta
+		activations = nn1.feedforward(XTrain)
+		loss2 = nn1.computeLoss(YTrain, activations)
+		num_grad_ij = (loss2 - loss1) / delta
+		num_grad[i, j] = num_grad_ij
+		nn1.layers[0].weights[0, 0, i, j] -= delta
 
 saved = nn1.layers[0].weights[0, 0, :, :].copy()
 activations = nn1.feedforward(XTrain)
