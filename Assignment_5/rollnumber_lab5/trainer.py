@@ -108,7 +108,7 @@ class Trainer:
                     if type(l).__name__ != "AvgPoolingLayer" and type(l).__name__ != "FlattenLayer": 
                         model.append(l.weights) 
                         model.append(l.biases)
-                np.save(modelName, model)
+                np.save(self.model_name, model)
                 print("Model Saved... ")
 
             # Estimate the prediction accuracy over validation data set

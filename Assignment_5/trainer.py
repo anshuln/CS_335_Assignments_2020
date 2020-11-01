@@ -53,8 +53,8 @@ class Trainer:
             self.lr = 1e-3
             self.nn = nn.NeuralNetwork(out_nodes=2, lr=self.lr)
             # nn.addLayer()
-            self.nn.addLayer(FullyConnectedLayer(2, 4, 'relu'))
-            self.nn.addLayer(FullyConnectedLayer(4, 2, 'softmax'))
+            self.nn.addLayer(FullyConnectedLayer(2, 3, 'relu'))
+            self.nn.addLayer(FullyConnectedLayer(3, 2, 'softmax'))
 
         if dataset_name == 'square':
             self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readXOR()
@@ -64,8 +64,8 @@ class Trainer:
             self.lr = 1e-3
             self.nn = nn.NeuralNetwork(out_nodes=2, lr=self.lr)
             # nn.addLayer()
-            self.nn.addLayer(FullyConnectedLayer(2, 2, 'relu'))
-            self.nn.addLayer(FullyConnectedLayer(2, 2, 'softmax'))
+            self.nn.addLayer(FullyConnectedLayer(2, 3, 'relu'))
+            self.nn.addLayer(FullyConnectedLayer(3, 2, 'softmax'))
 
 
         if dataset_name == 'circle':
@@ -150,7 +150,7 @@ class Trainer:
                     if type(l).__name__ != "AvgPoolingLayer" and type(l).__name__ != "FlattenLayer": 
                         model.append(l.weights) 
                         model.append(l.biases)
-                np.save(modelName, model)
+                np.save(self.model_name, model)
                 print("Model Saved... ")
 
             # Estimate the prediction accuracy over validation data set
