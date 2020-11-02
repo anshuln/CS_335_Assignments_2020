@@ -14,7 +14,7 @@ from util import *
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     """ Arguments: arg """
-    parser.add_argument('--dataset', choices=['MNIST', 'CIFAR10', 'square', 'circle'])
+    parser.add_argument('--dataset', choices=['MNIST', 'CIFAR10', 'XOR', 'circle'])
     parser.add_argument('--verbose',action='store_true')
     parser.add_argument('--seed',type=int, default=335)
 
