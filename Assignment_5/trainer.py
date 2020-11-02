@@ -35,11 +35,16 @@ class Trainer:
             self.model_name = "model.npy"
 
             # Add your network topology along with other hyperparameters here
-            # self.batch_size = 
-            # self.epochs = 
-            # self.lr = 
+            self.batch_size = 16
+            self.epochs = 10
+            self.lr = 1e-2
             # self.nn = 
             # nn.addLayer()
+            self.nn = nn.NeuralNetwork(10, 1e-2)
+            self.nn.addLayer(ConvolutionLayer([3, 32, 32], [4, 4], 6, 4, 'relu'))
+            self.nn.addLayer(AvgPoolingLayer([6, 8, 8], [2, 2], 2))
+            self.nn.addLayer(FlattenLayer())
+            self.nn.addLayer(FullyConnectedLayer(96, 10, 'softmax'))
 
         if dataset_name == 'XOR':
             self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readXOR()
