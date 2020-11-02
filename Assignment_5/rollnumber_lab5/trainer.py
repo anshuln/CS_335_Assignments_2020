@@ -41,7 +41,7 @@ class Trainer:
             # self.nn = 
             # nn.addLayer()
 
-        if dataset_name == 'square':
+        if dataset_name == 'XOR':
             self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readXOR()
             # Add your network topology along with other hyperparameters here
             # self.batch_size = 
