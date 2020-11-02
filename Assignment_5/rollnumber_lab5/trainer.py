@@ -34,7 +34,7 @@ class Trainer:
 			self.YTrain = self.YTrain[0:5000,:]
 
 			self.save_model = True
-			self.model_name = "model.npy"
+			self.model_name = "model.p"
 
 			# Add your network topology along with other hyperparameters here
 			# self.batch_size = 
