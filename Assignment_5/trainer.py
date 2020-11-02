@@ -12,79 +12,79 @@ from layers import *
 
 class Trainer:
 
-    def __init__(self,dataset_name):
-        self.save_model = False
-        if dataset_name == 'MNIST':
-            self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readMNIST()
-            # Add your network topology along with other hyperparameters here
-            self.batch_size = 64
-            self.epochs = 20
-            # self.lr = 0.001
-            self.nn = nn.NeuralNetwork(out_nodes=10,lr=0.001)    
-            self.nn.addLayer(FullyConnectedLayer(784,10,activation='softmax'))
+	def __init__(self,dataset_name):
+		self.save_model = False
+		if dataset_name == 'MNIST':
+			self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readMNIST()
+			# Add your network topology along with other hyperparameters here
+			self.batch_size = 64
+			self.epochs = 20
+			# self.lr = 0.001
+			self.nn = nn.NeuralNetwork(out_nodes=10,lr=0.001)    
+			self.nn.addLayer(FullyConnectedLayer(784,10,activation='softmax'))
 
 
-        if dataset_name == 'CIFAR10':
-            self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readCIFAR10()
-            self.XTrain = self.XTrain[0:5000,:,:,:]
-            self.XVal = self.XVal[0:1000,:,:,:]
-            self.XTest = self.XTest[0:1000,:,:,:]
-            self.YVal = self.YVal[0:1000,:]
-            self.YTest = self.YTest[0:1000,:]
-            self.YTrain = self.YTrain[0:5000,:]
+		if dataset_name == 'CIFAR10':
+			self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readCIFAR10()
+			self.XTrain = self.XTrain[0:5000,:,:,:]
+			self.XVal = self.XVal[0:1000,:,:,:]
+			self.XTest = self.XTest[0:1000,:,:,:]
+			self.YVal = self.YVal[0:1000,:]
+			self.YTest = self.YTest[0:1000,:]
+			self.YTrain = self.YTrain[0:5000,:]
 
-            self.save_model = True
-            self.model_name = "model.npy"
+			self.save_model = True
+			self.model_name = "model.npy"
 
-            # Add your network topology along with other hyperparameters here
-            self.batch_size = 16
-            self.epochs = 10
-            self.lr = 1e-2
-            # self.nn = 
-            # nn.addLayer()
-            self.nn = nn.NeuralNetwork(10, 1e-2)
-            self.nn.addLayer(ConvolutionLayer([3, 32, 32], [4, 4], 6, 4, 'relu'))
-            self.nn.addLayer(AvgPoolingLayer([6, 8, 8], [2, 2], 2))
-            self.nn.addLayer(FlattenLayer())
-            self.nn.addLayer(FullyConnectedLayer(96, 10, 'softmax'))
+			# Add your network topology along with other hyperparameters here
+			self.batch_size = 16
+			self.epochs = 10
+			self.lr = 1e-2
+			# self.nn = 
+			# nn.addLayer()
+			self.nn = nn.NeuralNetwork(10, 1e-2)
+			self.nn.addLayer(ConvolutionLayer([3, 32, 32], [4, 4], 6, 4, 'relu'))
+			self.nn.addLayer(AvgPoolingLayer([6, 8, 8], [2, 2], 2))
+			self.nn.addLayer(FlattenLayer())
+			self.nn.addLayer(FullyConnectedLayer(96, 10, 'softmax'))
 
-        if dataset_name == 'XOR':
-            self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readXOR()
+		if dataset_name == 'XOR':
+			self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readXOR()
 
-            # self.save_model = True
-            self.model_name = "model.npy"
+			# self.save_model = True
+			self.model_name = "model.npy"
 
-            # Add your network topology along with other hyperparameters here
-            self.batch_size = 10
-            self.epochs = 15
-            self.lr = 1e-3
-            self.nn = nn.NeuralNetwork(out_nodes=2, lr=self.lr)
-            # nn.addLayer()
-            self.nn.addLayer(FullyConnectedLayer(2, 3, 'relu'))
-            self.nn.addLayer(FullyConnectedLayer(3, 2, 'softmax'))
+			# Add your network topology along with other hyperparameters here
+			self.batch_size = 10
+			self.epochs = 15
+			self.lr = 1e-3
+			self.nn = nn.NeuralNetwork(out_nodes=2, lr=self.lr)
+			# nn.addLayer()
+			self.nn.addLayer(FullyConnectedLayer(2, 3, 'relu'))
+			self.nn.addLayer(FullyConnectedLayer(3, 2, 'softmax'))
 
-        if dataset_name == 'square':
-            self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readXOR()
-            # Add your network topology along with other hyperparameters here
-            self.batch_size = 10
-            self.epochs = 20
-            self.lr = 1e-3
-            self.nn = nn.NeuralNetwork(out_nodes=2, lr=self.lr)
-            # nn.addLayer()
-            self.nn.addLayer(FullyConnectedLayer(2, 3, 'relu'))
-            self.nn.addLayer(FullyConnectedLayer(3, 2, 'softmax'))
+		if dataset_name == 'square':
+			self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readXOR()
+			# Add your network topology along with other hyperparameters here
+			self.batch_size = 10
+			self.epochs = 20
+			self.lr = 1e-3
+			self.nn = nn.NeuralNetwork(out_nodes=2, lr=self.lr)
+			# nn.addLayer()
+			self.nn.addLayer(FullyConnectedLayer(2, 3, 'relu'))
+			self.nn.addLayer(FullyConnectedLayer(3, 2, 'softmax'))
 
 
-        if dataset_name == 'circle':
-            self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readCircle()
-            # Add your network topology along with other hyperparameters here
-            self.batch_size = 10
-            self.epochs = 20
-            self.lr = 1e-3
-            self.nn = nn.NeuralNetwork(out_nodes=2, lr=self.lr)
-            # nn.addLayer()
-            self.nn.addLayer(FullyConnectedLayer(2, 2, 'relu'))
-            self.nn.addLayer(FullyConnectedLayer(2, 2, 'softmax'))
+		if dataset_name == 'circle':
+			self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readCircle()
+			# Add your network topology along with other hyperparameters here
+			self.batch_size = 10
+			self.epochs = 20
+			self.lr = 1e-3
+			self.nn = nn.NeuralNetwork(out_nodes=2, lr=self.lr)
+			# nn.addLayer()
+			self.nn.addLayer(FullyConnectedLayer(2, 2, 'relu'))
+			self.nn.addLayer(FullyConnectedLayer(2, 2, 'softmax'))
 	def train(self, verbose=True):
 		# Method for training the Neural Network
 		# Input
