@@ -9,8 +9,9 @@ from kernel_logistic import *
 from kernel_logistic_ref import KernelLogistic as KL_ref
 import time
 
-np.random.seed(335)
+np.random.seed(37)
 def grade4():
+	print("==============================\n Grading KMeans")
 	marks = 0
 	try:
 		data = np.array([[i,i] for i in range(5)])
@@ -43,30 +44,33 @@ def grade4():
 			marks += 1
 	except:
 		print('Error in k-means')
+	print(f"Marks obtained {marks}")
 	return marks
 
 def grade1():
 	# data = np.loadtxt("data/test_kernel_func.csv",delimiter=",")
 	# X = data[:,:2]
 	# Y = data[:,2:4]
+	print("==============================\n Grading Kernel Functions")
 	X = np.random.normal(0,1,(1000,2))
 	Y = np.random.normal(0,1,(1000,2))
 	marks = 0
 	try:
-		t_ref = time.time()
-		Z = gaussian_kernel(X,Y,sigma=0.1)
-		t_ref = time.time() - t_ref 
-
 		t_student = time.time()
+		Z = gaussian_kernel(X,Y,sigma=0.1)
+		t_student = time.time() - t_student 
+
+		t_ref = time.time()
 		Z_ref = gk_ref(X,Y,sigma=0.1)
-		t_student = time.time() - t_student
+		t_ref = time.time() - t_ref
 
 		if np.allclose(Z_ref,Z,rtol=0): 
 			marks += 0.5
-			if np.allclose(t_student,t_ref,rtol=1) or t_student < t_ref:
+
+			if t_student < 3*t_ref:
 				marks += 1
 			else:
-				print("RBF is too slow")
+				print("RBF computation is too slow")
 		else:
 			print("Wrong output for RBF kernel")
 
@@ -76,11 +80,15 @@ def grade1():
 			marks += 0.5
 		else:
 			print("Wrong output for linear_kernel")
-		return marks
-	except:
+	except Exception as e:
 		print("Error in kernel functions")
+		print(e)
 
+	print(f"Marks obtained {marks}")
+
+	return marks
 def grade2():
+	print("==============================\n Grading Kernel Logistic Regression")
 	marks = 0
 	data = np.loadtxt("./data/dataset1.txt")
 	X1 = data[:900,:2]
@@ -96,7 +104,6 @@ def grade2():
 		marks = 0
 		return marks
 	correct = np.sum(y_predict == data[900:,2])
-	print("%d out of %d predictions correct" % (correct, len(y_predict)))
 	if correct > 92:
 		marks += 1.0
 	else:
@@ -108,7 +115,7 @@ def grade2():
 
 	y_ref = clf_ref.predict(data[900:,:2])
 	y_     = clf.predict(data[900:,:2])
-	if np.allclose(y_,y_ref,rtol=1e-8):
+	if np.allclose(y_,y_ref,rtol=1e-8, atol=1e-8):
 		marks += 0.5
 	else:
 		print("Predict function for kernel_logistic is incorrect")
@@ -129,7 +136,7 @@ def grade2():
 	except Exception as e:
 		print("Implementation error in your k_fold_cv")
 		print(e)
-		return marks
+	print(f"Marks obtained {marks}")
 
 	return marks
 	
@@ -137,6 +144,7 @@ def grade2():
 
 def grade3():
 	# TODO - should we also check efficiency?
+	print("==============================\n Grading Kernel Ridge Regression")
 	marks = 0
 	X, Y = read_data('./data/krr.csv')
 	try:
@@ -168,31 +176,65 @@ def grade3():
 		marks += 0.5
 	else:
 		print("Predict function for krr is incorrect")
+	print(f"Marks obtained {marks}")
 
 	return marks
 
-# def grade5():
-# 	X, Y = read_data('./data/kernel_design.csv')
-# 	# plot_3D(X[:,0], X[:,1], Y)
-# 	fig,ax = plt.subplots(nrows=1,ncols=3, figsize=(9,3))
-# 	indices = np.arange(len(X))
-# 	np.random.shuffle(indices)
-# 	X = X[indices]
-# 	Y = Y[indices]
-# 	X_train = X[:1000,:]
-# 	Y_train = Y[:1000,:]
-# 	clf = KernelRidgeRegression(my_kernel,0.01,0.1)
-# 	clf.fit(X_train, Y_train)
+def grade5():
+	print("==============================\n Grading Kernel Design")
+	marks = 0
+	try:
+		X, Y = read_data('./data/kernel_design.csv')
+		# plot_3D(X[:,0], X[:,1], Y)
+		clf = KernelRidgeRegression(my_kernel,0.01,0.1)
+		clf.fit(X, Y)
 
-# 	err = plot_alongside_data(X[1000:,:], Y[1000:,:], clf.predict,ax[0],title='Custom Kernel')
+		err = np.linalg.norm(clf.predict(X)-Y)**2
+		# plt.show()
 
-# 	if err < 7000:
-# 		marks = 1.5
-# 	elif err < 7500:
-# 		marks = 1.0
-# 	elif err < 8000:
-# 		marks = 0.5
-# 	else:
-# 		marks = 0
+		if err < 7000:
+			marks += 1.0
+		elif err < 7500:
+			marks += 0.75
+			print("Total error is too high")
+		elif err < 8000:
+			marks += 0.5
+		else:
+			marks += 0
+	except Exception as e:
+		print("Error in task 5")
+		print(e)
+	try:
+		X, Y = read_data('./data/kernel_design.csv')
+		indices = np.arange(len(X))
+		np.random.shuffle(indices)
+		X = X[indices]
+		Y = Y[indices]
+		X_train = X[:600,:]
+		Y_train = Y[:600,:]
+		X_test = X[600:,:]
+		Y_test = Y[600:,:]
+		clf = KernelRidgeRegression(my_kernel,0.01,0.1)
+		clf.fit(X_train, Y_train)
+		# plot_3D(X[:,0], X[:,1], Y)
+		clf = KernelRidgeRegression(my_kernel,0.01,0.1)
+		clf.fit(X, Y)
 
-print(f'Total Marks = {grade3() + grade2() + grade1()}')
+		err = np.linalg.norm(clf.predict(X_test)-Y_test)**2
+		# plt.show()
+		if err < 2200:
+			marks += 0.5
+		elif err < 2700:
+			marks += 0.25
+			print("Test error is too high")
+		else:
+			print("Test error is too high")
+			marks += 0
+	except Exception as e:
+		print("Error in task 5")
+		print(e)		
+	print(f"Marks obtained {marks}")
+	return marks
+
+
+print(f'Total Marks = {grade5()+grade4()+grade3()+grade2()+grade1()}')
