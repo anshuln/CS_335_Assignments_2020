@@ -79,7 +79,7 @@ def test_cifar(seed=[]):
 
     i = 0
     for l in trainer.nn.layers:
-        if type(l).__name__ != "AvgPoolingLayer" and type(l).__name__ != "FlattenLayer": 
+        if type(l).__name__ not in ["AvgPoolingLayer", "MaxPoolingLayer", "FlattenLayer"]: 
             l.weights = model[i]
             l.biases = model[i+1]
             i = i + 2
