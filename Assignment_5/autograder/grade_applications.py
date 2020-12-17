@@ -77,13 +77,17 @@ def test_cifar(seed=[]):
         print('ConvolutionLayer not used')
         return 0
 
-    i = 0
-    for l in trainer.nn.layers:
-        if type(l).__name__ not in ["AvgPoolingLayer", "MaxPoolingLayer", "FlattenLayer"]: 
-            l.weights = model[i]
-            l.biases = model[i+1]
-            i = i + 2
-    print("Model Loaded... ")
+    try:
+        i = 0
+        for l in trainer.nn.layers:
+            if type(l).__name__ not in ["AvgPoolingLayer", "MaxPoolingLayer", "FlattenLayer"]: 
+                l.weights = model[i]
+                l.biases = model[i+1]
+                i = i + 2
+        print("Model Loaded... ")
+    except:
+        print("Failed to load model")
+        return 0
 
     _, acc = trainer.nn.validate(trainer.XTest, trainer.YTest)
     
