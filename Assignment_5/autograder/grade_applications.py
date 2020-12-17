@@ -48,7 +48,7 @@ def test_applications(dataset, seeds=[]):
 
     return marks
 
-def test_cifar(seed):
+def test_cifar(seed=[]):
     '''
     seeds -> list of seeds to test on
     '''
