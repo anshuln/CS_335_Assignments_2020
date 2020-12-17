@@ -9,7 +9,7 @@ import layers_ref
 import layers
 from trainer import Trainer
 
-def test_trainer_train():
+def grade_trainer_train():
     marks = 0
 
     trainer = Trainer('XOR')
@@ -37,6 +37,9 @@ def test_trainer_train():
     elif acc > 90:
         marks += 1
 
+    print('Marks for trainer', marks)
+
     return marks
 
-print(test_trainer_train())
+if __name__ == '__main__':
+    print(test_trainer_train())

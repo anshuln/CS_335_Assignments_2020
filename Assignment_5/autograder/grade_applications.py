@@ -96,6 +96,15 @@ def test_cifar(seed):
 
     return marks
 
+def grade_applications():
+    marks = 0
+
+    for d in ['XOR', 'circle', 'MNIST']:
+        marks += test_applications(d)
+    marks += test_cifar()
+
+    return marks
+
 def main(args):
     marks = 0
     if args.dataset is None:

@@ -115,16 +115,20 @@ def grade_activation(func_name):
 
     return marks
 
-tot_marks = 0
+def grade_layers():
+    tot_marks = 0
 
-for f in ['relu','softmax']:
-    tot_marks += grade_activation(f)
-
-
-for k in config.keys():
-    tot_marks += check_layer(k)
+    for f in ['relu','softmax']:
+        tot_marks += grade_activation(f)
 
 
-print("-----------------------")
-print("xxxxxxxxxxxxxxxxxxxxxxx")
-print("Total marks {}".format(tot_marks))
+    for k in config.keys():
+        tot_marks += check_layer(k)
+
+    return tot_marks
+
+if __name__ == '__main__':
+    tot_marks = grade_layers()
+    print("-----------------------")
+    print("xxxxxxxxxxxxxxxxxxxxxxx")
+    print("Total marks {}".format(tot_marks))
