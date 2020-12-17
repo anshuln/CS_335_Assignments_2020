@@ -62,14 +62,14 @@ def check_layer(layer_name):
                     else:
                         print("Weight update incorrect for {}".format(layer_name))
         else:
-            print(X)
-            print(student_layer.forwardpass(X))
-            print("-----")
-            print(student_layer.backwardpass(0.01,act,delta))
-            print("------")
-            print(ref_layer.backwardpass(0.01,act,delta))
-            print("------")
-            print(ref_layer.backwardpass(0.01,act,delta) == student_layer.backwardpass(0.01,act,delta))
+            # print(X)
+            # print(student_layer.forwardpass(X))
+            # print("-----")
+            # print(student_layer.backwardpass(0.01,act,delta))
+            # print("------")
+            # print(ref_layer.backwardpass(0.01,act,delta))
+            # print("------")
+            # print(ref_layer.backwardpass(0.01,act,delta) == student_layer.backwardpass(0.01,act,delta))
             print("Backwardpass incorrect for {}".format(layer_name))
     except Exception as e:
         print("Error in backwardpass {} - {}".format(layer_name,e))
