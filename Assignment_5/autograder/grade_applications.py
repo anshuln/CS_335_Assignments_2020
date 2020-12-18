@@ -24,10 +24,11 @@ def test_applications(dataset, seeds=[]):
     print(f'Grading {dataset}')
     marks = 0
 
-    seeds_ = [45, 140, 33]
-    seeds = (seeds+seeds_)[:10]
+    if len(seeds)==0:
+        np.random.seed(337)
+        seeds = list(np.random.randint(1, 200, 10))
 
-    acc = 0
+    acc = []
     for seed in seeds:
         trainer = Trainer(dataset)
         
@@ -35,9 +36,12 @@ def test_applications(dataset, seeds=[]):
         with redirect_stdout(f):
             trainer.train(verbose=False)
         out = f.getvalue()
-        acc += float(out.strip().split(' ')[-1])
+        acc.append(float(out.strip().split(' ')[-1]))
 
-    acc = acc/len(seeds)
+    if len(seeds)==10:
+        acc = np.mean(np.sort(acc)[:4:-1])
+    else:
+        acc = np.mean(acc)
 
     for i, j in marks_map[dataset]:
         if acc > i:

@@ -60,8 +60,8 @@ class Trainer:
 			self.lr = 1e-3
 			self.nn = nn.NeuralNetwork(out_nodes=2, lr=self.lr)
 			# nn.addLayer()
-			self.nn.addLayer(FullyConnectedLayer(2, 5, 'relu'))
-			self.nn.addLayer(FullyConnectedLayer(5, 2, 'softmax'))
+			self.nn.addLayer(FullyConnectedLayer(2, 4, 'relu'))
+			self.nn.addLayer(FullyConnectedLayer(4, 2, 'softmax'))
 
 		if dataset_name == 'square':
 			self.XTrain, self.YTrain, self.XVal, self.YVal, self.XTest, self.YTest = readXOR()
