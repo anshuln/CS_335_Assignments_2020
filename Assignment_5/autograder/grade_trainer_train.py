@@ -10,6 +10,10 @@ import layers
 from trainer import Trainer
 
 def grade_trainer_train():
+
+    print('-------------------------')
+    print('Grading Trainer')
+
     marks = 0
 
     trainer = Trainer('XOR')

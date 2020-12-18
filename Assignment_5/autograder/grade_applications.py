@@ -21,6 +21,7 @@ def test_applications(dataset, seeds=[]):
     '''
     seeds -> list of seeds to test on
     '''
+    print('-------------------------')
     print(f'Grading {dataset}')
     marks = 0
 
@@ -61,6 +62,7 @@ def test_cifar(seed=[]):
     else:
         seed = seed[0]
 
+    print('-------------------------')
     print('Grading CIFAR10')
     marks = 0
 
